@@ -13,9 +13,10 @@ inoremap [ []<Left>
 inoremap ( ()<Left>
 inoremap " ""<Left>
 inoremap ' ''<Left>
-inoremap < <><Left>
 
 inoremap jj <Esc>
+nmap <space>u [unite]
+nnoremap [unite] <Nop>
 " 色コード
 autocmd ColorScheme * highlight LineNr ctermfg=74
 colorscheme hybrid 
@@ -32,6 +33,7 @@ call neobundle#begin(expand('~/.vim/bundle'))
 " インデントに色を付けて見やすくする
 NeoBundle "vim-scripts/taglist.vim" 
 NeoBundle "Shougo/unite.vim"
+NeoBundle 'tpope/vim-endwise'
 NeoBundle "git://github.com/Shougo/vimproc"
 NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'mattn/emmet-vim'
@@ -44,6 +46,7 @@ NeoBundle "Shougo/neocomplcache"
 NeoBundle 'marijnh/tern_for_vim'
 NeoBundle 'git://github.com/kien/ctrlp.vim.git'
 NeoBundle 'davidhalter/jedi-vim'
+NeoBundle 'YankRing.vim'
 NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
@@ -58,16 +61,6 @@ call neobundle#end()
 "autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=gray ctermbg=gray
 " 偶数インデントのカラー
 "autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgray ctermbg=darkgray
-
-"ctags用のコマンド"
-set tags = tags
-let Tlist_Ctags_Cmd = "/usr/local/bin/ctags"  " ctagsのコマンド
-let Tlist_Show_One_File = 1                         "現在表示中のファイルのみのタグしか表示しない
-let Tlist_Use_Right_Window = 1                    "右側にtag listのウインドうを表示する
-"taglistのウインドウだけならVimを閉じる
-let Tlist_Exit_OnlyWindow = 1                     
-"taglistウインドウを開いたり閉じたり出来るショートカット
-map <silent> <leader>l :TlistToggle<CR>     
 
 "neocomplcache用の設定
 let g:acp_enableAtStartup = 0
@@ -108,7 +101,7 @@ filetype indent on
 
 "クリップボードの内容を全体で共有
 set clipboard+=autoselect
-set clipboard+=unnamed
+set clipboard+=unnamedplus,unnamed
 
 set mouse=a
 
