@@ -7,15 +7,21 @@ set tabstop=2
 scriptencoding utf-8
 set nocompatible
 
+"Leaderの設定
+let mapleader = ","
+" ,のデフォルト機能を使うために\に設定
+noremap \ ,
+
 " 括弧の補完
 inoremap { {}<Left>
 inoremap [ []<Left>
 inoremap ( ()<Left>
 inoremap " ""<Left>
 inoremap ' ''<Left>
+nnoremap <C-e> :NERDTreeToggle<CR>
 
 inoremap jj <Esc>
-nmap <space>u [unite]
+nmap <Space>u [unite]
 nnoremap [unite] <Nop>
 " 色コード
 autocmd ColorScheme * highlight LineNr ctermfg=74
@@ -52,6 +58,7 @@ NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'git://github.com/scrooloose/nerdtree.git'
 NeoBundle 'git://github.com/scrooloose/syntastic.git'
+NeoBundle "thinca/vim-quickrun"
 call neobundle#end()
 
 " vimを立ち上げたときに、自動的にvim-indent-guidesをオンにする
