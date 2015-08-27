@@ -106,6 +106,7 @@ syntax on
 filetype plugin indent on
 filetype indent on
 
+
 "クリップボードの内容を全体で共有
 set clipboard+=autoselect
 set clipboard+=unnamedplus,unnamed
