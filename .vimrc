@@ -37,10 +37,17 @@ call neobundle#begin(expand('~/.vim/bundle/'))
 
 " インデントに色を付けて見やすくする
 NeoBundle "vim-scripts/taglist.vim" 
-NeoBundle "Shougo/unite.vim"
 NeoBundle 'tpope/vim-endwise'
+NeoBundle 'Shougo/vimproc.vim', {
+      \ 'build' : {
+      \     'windows' : 'tools\\update-dll-mingw',
+      \     'cygwin' : 'make -f make_cygwin.mak',
+      \     'mac' : 'make',
+      \     'linux' : 'make',
+      \     'unix' : 'gmake',
+      \    },
+      \ }
 NeoBundle 'Shougo/unite.vim'
-NeoBundle "https://github.com/Shougo/vimproc"
 NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'mattn/emmet-vim'
 NeoBundle 'taichouchou2/surround.vim'
