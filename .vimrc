@@ -20,6 +20,11 @@ inoremap " ""<Left>
 inoremap ' ''<Left>
 nnoremap <C-e> :NERDTreeToggle<CR>
 
+nnoremap <Up> <C-w>k
+nnoremap <Down> <C-w>j
+nnoremap <Right> <C-w>l
+nnoremap <Left> <C-w>h
+
 inoremap jj <Esc>
 nmap <Space>u [unite]
 nnoremap [unite] <Nop>
