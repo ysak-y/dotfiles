@@ -1,0 +1,20 @@
+[alias]
+	co = checkout
+  br = branch
+  pl = pull
+  fixup = commit --amend
+	st = status
+  fetchpr = fetch origin '+refs/pull/*:refs/remotes/pr/*'
+  copr = "!f(){ git checkout -b pr$1 pr/$1/head;};f"
+[core]
+	editor = vim
+[user]
+	name = ysak-y
+	email = yoshiaki.0614@gmail.com
+[color]
+	ui = auto
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
