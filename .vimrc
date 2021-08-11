@@ -6,6 +6,7 @@ set nocompatible
 set expandtab
 set nobackup
 set noswapfile
+set backspace=indent,eol,start
 
 "Leaderの設定
 let mapleader = ","
@@ -13,11 +14,11 @@ let mapleader = ","
 noremap \ ,
 
 " 括弧の補完
-inoremap { {}<Left>
-inoremap [ []<Left>
-inoremap ( ()<Left>
-inoremap " ""<Left>
-inoremap ' ''<Left>
+"inoremap { {}<Left>
+"inoremap [ []<Left>
+"inoremap ( ()<Left>
+"inoremap " ""<Left>
+"inoremap ' ''<Left>
 nnoremap <C-e> :NERDTreeToggle<CR>
 
 nnoremap <Up> <C-w>k
@@ -71,6 +72,7 @@ NeoBundle "thinca/vim-quickrun"
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'Shougo/neocomplcache.vim'
+NeoBundle 'leafgarland/typescript-vim'
 call neobundle#end()
 
 " vimを立ち上げたときに、自動的にvim-indent-guidesをオンにする
