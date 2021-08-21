@@ -35,10 +35,9 @@ if dein#check_install()
 
 " vimでペーストする際に、自動でpaste modeにする
 call dein#add('ConradIrwin/vim-bracketed-paste')
+endif
 
-
-
-endif number 
+set number 
 set autoindent
 set shiftwidth=2
 set tabstop=2
