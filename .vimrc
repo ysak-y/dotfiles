@@ -1,7 +1,61 @@
-set number 
+if &compatible
+  set nocompatible " Be iMproved
+endif
+
+" Deinで管理するディレクトリを指定
+set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
+call dein#begin(expand('~/.vim/dein'))
+
+call dein#add('Shougo/dein.vim')
+call dein#add('Shougo/vimproc.vim', {'build': 'make'})
+call dein#add('Shougo/neocomplete.vim')
+call dein#add('Shougo/neomru.vim')
+call dein#add('Shougo/neosnippet')
+call dein#add('Shougo/neosnippet-snippets')
+call dein#add('Shougo/denite.nvim')
+
+" Ruby向けにendを自動挿入してくれる
+call dein#add('tpope/vim-endwise')
+
+" 自動で括弧を締める"
+call dein#add('Townk/vim-autoclose')
+
+" ファイルをtree表示してする
+call dein#add('scrooloose/nerdtree')
+nnoremap <silent><C-e> :NERDTreeToggle<CR>
+
+" 行末の半角スペースを可視化
+ call dein#add('bronson/vim-trailing-whitespace')
+
+" ログファイルを色づけしてくれる
+call dein#add('vim-scripts/AnsiEsc.vim')
+
+" vimでペーストする際に、自動でpaste modeにする
+ call dein#add('ConradIrwin/vim-bracketed-paste')
+
+" vimの画面の一番下にあるステータスラインの表示内容が強化
+call dein#add('itchyny/lightline.vim')
+
+" deoplete
+" call dein#add('Shougo/deoplete.nvim')
+" if !has('nvim')
+"   call dein#add('roxma/nvim-yarp')
+"   call dein#add('roxma/vim-hug-neovim-rpc')
+" endif
+" let g:deoplete#enable_at_startup = 1
+
+call dein#end()
+
+"pluginのインストール
+if dein#check_install()
+  call dein#install()
+endif
+
+set number
 set autoindent
 set shiftwidth=2
 set tabstop=2
+autocmd FileType python setlocal sw=4 sts=4 ts=4 et
 set nocompatible
 set expandtab
 set nobackup
@@ -13,13 +67,35 @@ let mapleader = ","
 " ,のデフォルト機能を使うために\に設定
 noremap \ ,
 
-" 括弧の補完
-"inoremap { {}<Left>
-"inoremap [ []<Left>
-"inoremap ( ()<Left>
-"inoremap " ""<Left>
-"inoremap ' ''<Left>
-nnoremap <C-e> :NERDTreeToggle<CR>
+set nowritebackup
+" ファイルを上書きする前にバックアップを作ることを無効化
+set nobackup
+"文字コードをUFT-8に設定
+set fenc=utf-8
+
+"------------------------
+" 検索
+"------------------------
+" 検索するときに大文字小文字を区別しない
+set ignorecase
+" 小文字で検索すると大文字と小文字を無視して検索
+set smartcase
+" 検索がファイル末尾まで進んだら、ファイル先頭から再び検索
+set wrapscan
+" インクリメンタル検索 (検索ワードの最初の文字を入力した時点で検索が開始)
+set incsearch
+" 検索結果をハイライト表示
+set hlsearch
+
+
+" 対応する括弧やブレースを表示
+set showmatch matchtime=1
+
+" yでコピーした時にクリップボードに入る
+set guioptions+=a
+
+" ヤンクでクリップボードにコピー
+set clipboard+=unnamed
 
 nnoremap <Up> <C-w>k
 nnoremap <Down> <C-w>j
@@ -27,61 +103,17 @@ nnoremap <Right> <C-w>l
 nnoremap <Left> <C-w>h
 
 inoremap jj <Esc>
-nmap <Space>u [unite]
-nnoremap [unite] <Nop>
 " 色コード
 autocmd ColorScheme * highlight LineNr ctermfg=74
-colorscheme hybrid 
+colorscheme hybrid
 
 if has("vim_starting")
-  filetype plugin off
-  filetype indent off
-  execute 'set runtimepath+=' . expand('~/.vim/bundle/neobundle.vim')
+  " 引数なしでvimを開くとNERDTreeを起動
+  let file_name = expand('%')
+  if file_name == ''
+    autocmd VimEnter * NERDTree ./
+  endif
 endif
-
-call neobundle#begin(expand('~/.vim/bundle/'))
-
-" インデントに色を付けて見やすくする
-NeoBundle "vim-scripts/taglist.vim" 
-NeoBundle 'tpope/vim-endwise'
-NeoBundle 'Shougo/vimproc.vim', {
-      \ 'build' : {
-      \     'windows' : 'tools\\update-dll-mingw',
-      \     'cygwin' : 'make -f make_cygwin.mak',
-      \     'mac' : 'make',
-      \     'linux' : 'make',
-      \     'unix' : 'gmake',
-      \    },
-      \ }
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'nathanaelkane/vim-indent-guides'
-NeoBundle 'mattn/emmet-vim'
-NeoBundle 'taichouchou2/surround.vim'
-NeoBundle 'hail2u/vim-css3-syntax'
-NeoBundle 'kchmck/vim-coffee-script'
-NeoBundle 'marijnh/tern_for_vim'
-NeoBundle 'https://github.com/kien/ctrlp.vim.git'
-NeoBundle 'davidhalter/jedi-vim'
-NeoBundle 'YankRing.vim'
-NeoBundle 'https://github.com/Shougo/neobundle.vim.git'
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'https://github.com/scrooloose/nerdtree.git'
-NeoBundle 'https://github.com/scrooloose/syntastic.git'
-NeoBundle "thinca/vim-quickrun"
-NeoBundle 'Shougo/neomru.vim'
-NeoBundle 'Shougo/neocomplete.vim'
-NeoBundle 'Shougo/neocomplcache.vim'
-NeoBundle 'leafgarland/typescript-vim'
-call neobundle#end()
-
-" vimを立ち上げたときに、自動的にvim-indent-guidesをオンにする
-"let g:indent_guides_enable_on_vim_startup = 1
-"let g:indent_guides_auto_colors=0
-" 奇数インデントのカラー
-"autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=gray ctermbg=gray
-" 偶数インデントのカラー
-"autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgray ctermbg=darkgray
 
 syntax on
 filetype plugin indent on
@@ -93,104 +125,96 @@ set clipboard+=unnamedplus,unnamed
 
 set mouse=a
 
-"jedi-vimの設定
-let g:jedi#completions_command = "<C-N>"
-"let g:jedi#auto_initialization = 0
-let g:jedi#popup_on_dot = 0
+" denite の設定
+nmap <Space>d [denite]
+nnoremap [denite] <Nop>
+nmap <Space> [denite]
+if dein#tap('denite.nvim')
+  " Add custom menus
+  let s:menus = {}
+  let s:menus.file = {'description': 'File search (buffer, file, file_rec, file_mru'}
+  let s:menus.line = {'description': 'Line search (change, grep, line, tag'}
+  let s:menus.others = {'description': 'Others (command, command_history, help)'}
+  let s:menus.file.command_candidates = [
+        \ ['buffer', 'Denite buffer'],
+        \ ['file: Files in the current directory', 'Denite file'],
+        \ ['file_rec: Files, recursive list under the current directory', 'Denite file_rec'],
+        \ ['file_mru: Most recently used files', 'Denite file_mru']
+        \ ]
+  let s:menus.line.command_candidates = [
+        \ ['change', 'Denite change'],
+        \ ['grep :grep', 'Denite grep'],
+        \ ['line', 'Denite line'],
+        \ ['tag', 'Denite tag']
+        \ ]
+  let s:menus.others.command_candidates = [
+        \ ['command', 'Denite command'],
+        \ ['command_history', 'Denite command_history'],
+        \ ['help', 'Denite help']
+        \ ]
 
-nmap <Space> [unite]
-nnoremap <silent> [unite]a :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+  call denite#custom#var('menu', 'menus', s:menus)
 
-"スペースキーとfキーでバッファと最近開いたファイル一覧を表示
-nnoremap <silent> [unite]f :<C-u>Unite<Space>buffer file_mru<CR>
-"スペースキーとdキーで最近開いたディレクトリを表示
-nnoremap <silent> [unite]d :<C-u>Unite<Space>directory_mru<CR>
-"スペースキーとbキーでバッファを表示
-nnoremap <silent> [unite]b :<C-u>Unite<Space>buffer<CR>
-"スペースキーとrキーでレジストリを表示
-nnoremap <silent> [unite]r :<C-u>Unite<Space>register<CR>
-"スペースキーとtキーでタブを表示
-nnoremap <silent> [unite]t :<C-u>Unite<Space>tab<CR>
-"スペースキーとhキーでヒストリ/ヤンクを表示
-nnoremap <silent> [unite]h :<C-u>Unite<Space>history/yank<CR>
-"スペースキーとoキーでoutline
-nnoremap <silent> [unite]o :<C-u>Unite<Space>outline<CR>
-"スペースキーとENTERキーでfile_rec:!
-nnoremap <silent> [unite]<CR> :<C-u>Unite<Space>file_rec:!<CR>
-"unite.vimを開いている間のキーマッピング
-autocmd FileType unite call s:unite_my_settings()
-function! s:unite_my_settings()"{{{
-      " ESCでuniteを終了
-          nmap <buffer> <ESC> <Plug>(unite_exit)
-        endfunction"}}}
+  nnoremap [denite] <Nop>
+  nmap <Leader>u [denite]
+  nnoremap <silent> [denite]b :Denite buffer<CR>
+  nnoremap <silent> [denite]c :Denite changes<CR>
+  nnoremap <silent> [denite]f :Denite file<CR>
+  nnoremap <silent> [denite]g :Denite grep<CR>
+  nnoremap <silent> [denite]h :Denite help<CR>
+  nnoremap <silent> [denite]h :Denite help<CR>
+  nnoremap <silent> [denite]l :Denite line<CR>
+  nnoremap <silent> [denite]t :Denite tag<CR>
+  nnoremap <silent> [denite]m :Denite file_mru<CR>
+  nnoremap <silent> [denite]u :Denite menu<CR>
 
-
-"Note: This option must be set in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-
-" Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
-
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
+  call denite#custom#map(
+        \ 'insert',
+        \ '<Down>',
+        \ '<denite:move_to_next_line>',
+        \ 'noremap'
+        \)
+  call denite#custom#map(
+        \ 'insert',
+        \ '<Up>',
+        \ '<denite:move_to_previous_line>',
+        \ 'noremap'
+        \)
+  call denite#custom#map(
+        \ 'insert',
+        \ '<C-N>',
+        \ '<denite:move_to_next_line>',
+        \ 'noremap'
+        \)
+  call denite#custom#map(
+        \ 'insert',
+        \ '<C-P>',
+        \ '<denite:move_to_previous_line>',
+        \ 'noremap'
+        \)
+  call denite#custom#map(
+        \ 'insert',
+        \ '<C-G>',
+        \ '<denite:assign_next_txt>',
+        \ 'noremap'
+        \)
+  call denite#custom#map(
+        \ 'insert',
+        \ '<C-T>',
+        \ '<denite:assign_previous_line>',
+        \ 'noremap'
+        \)
+  call denite#custom#map(
+        \ 'normal',
+        \ '/',
+        \ '<denite:enter_mode:insert>',
+        \ 'noremap'
+        \)
+  call denite#custom#map(
+        \ 'insert',
+        \ '<Esc>',
+        \ '<denite:enter_mode:normal>',
+        \ 'noremap'
+        \)
 endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? "\<C-y>" : "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-" Close popup by <Space>.
-"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
-
-" AutoComplPop like behavior.
-"let g:neocomplete#enable_auto_select = 1
-
-" Shell like behavior(not recommended).
-"set completeopt+=longest
-"let g:neocomplete#enable_auto_select = 1
-"let g:neocomplete#disable_auto_complete = 1
-"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
-
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-" For perlomni.vim setting.
-" https://github.com/c9s/perlomni.vim
