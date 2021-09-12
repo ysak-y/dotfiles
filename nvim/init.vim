@@ -36,15 +36,18 @@ call dein#add('ConradIrwin/vim-bracketed-paste')
 " vimの画面の一番下にあるステータスラインの表示内容が強化
 call dein#add('itchyny/lightline.vim')
 
+call dein#add('rust-lang/rust.vim')
+
 " deoplete
-" call dein#add('Shougo/deoplete.nvim')
-" if !has('nvim')
-"   call dein#add('roxma/nvim-yarp')
-"   call dein#add('roxma/vim-hug-neovim-rpc')
-" endif
-" let g:deoplete#enable_at_startup = 1
+call dein#add('Shougo/deoplete.nvim')
+if !has('nvim')
+  call dein#add('roxma/nvim-yarp')
+  call dein#add('roxma/vim-hug-neovim-rpc')
+endif
+let g:deoplete#enable_at_startup = 1
 
 call dein#end()
+call dein#save_state()
 
 "pluginのインストール
 if dein#check_install()
@@ -61,7 +64,6 @@ set expandtab
 set nobackup
 set noswapfile
 set backspace=indent,eol,start
-
 "Leaderの設定
 let mapleader = "\<Space>"
 " ,のデフォルト機能を使うために\に設定
@@ -87,7 +89,6 @@ set incsearch
 " 検索結果をハイライト表示
 set hlsearch
 
-
 " 対応する括弧やブレースを表示
 set showmatch matchtime=1
 
@@ -96,11 +97,6 @@ set guioptions+=a
 
 " ヤンクでクリップボードにコピー
 set clipboard+=unnamed
-
-nnoremap <Up> <C-w>k
-nnoremap <Down> <C-w>j
-nnoremap <Right> <C-w>l
-nnoremap <Left> <C-w>h
 
 inoremap jj <Esc>
 " 色コード
@@ -119,8 +115,6 @@ syntax on
 filetype plugin indent on
 filetype indent on
 
-"クリップボードの内容を全体で共有
-set clipboard+=autoselect
 set clipboard+=unnamedplus,unnamed
 
 set mouse=a
