@@ -6,6 +6,7 @@
 	st = status
   fetchpr = fetch origin '+refs/pull/*:refs/remotes/pr/*'
   copr = "!f(){ git checkout -b pr$1 pr/$1/head;};f"
+  ls = ls-files
 [core]
 	editor = vim
 [user]
