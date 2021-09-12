@@ -24,8 +24,10 @@ export GOOGLE_APPLICATION_CREDENTIALS=$HOME/Downloads/account-book-3144d-firebas
 PATH="$HOME/google-cloud-sdk:$HOME/google-cloud-sdk/bin:$PATH"
 PATH="/usr/local/bin/platform-tools:$PATH"
 PATH=$(npm bin):$PATH
+
+# homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
-export PATH="/opt/homebrew/opt/m4/bin:$PATH"
+export PATH="/opt/homebrew/opt/m4/bin:/opt/homebrew/bin:$PATH"
 . "$HOME/.cargo/env"
 
 export PATH="$HOME/.xtensa/xtensa-esp32-elf-clang:$PATH"
