@@ -6,6 +6,7 @@ eval "$(rbenv init -)"
 alias rn="react-native"
 alias g="git"
 alias vim="nvim"
+alias tmux="tmux -u"
 
 #https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/#get-started-export
 alias get_idf='$HOME/esp/esp-idf/install.sh && . $HOME/esp/esp-idf/export.sh'
