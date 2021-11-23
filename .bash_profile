@@ -7,6 +7,7 @@ alias rn="react-native"
 alias g="git"
 alias vim="nvim"
 alias tmux="tmux -u"
+alias ngrok-vscode="ngrok http 8080 -region=jp --log=stdout > ngrok.log & code-server"
 
 #https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/#get-started-export
 alias get_idf='$HOME/esp/esp-idf/install.sh && . $HOME/esp/esp-idf/export.sh'

@@ -13,6 +13,7 @@ call dein#add('Shougo/neomru.vim')
 call dein#add('Shougo/neosnippet')
 call dein#add('Shougo/neosnippet-snippets')
 call dein#add('Shougo/denite.nvim')
+call dein#add("cohama/lexima.vim")
 
 " Ruby向けにendを自動挿入してくれる
 call dein#add('tpope/vim-endwise')
