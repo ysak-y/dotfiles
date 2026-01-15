@@ -1,0 +1,312 @@
+// =============================================================================
+// Zellij Configuration
+// =============================================================================
+// Modern terminal multiplexer configuration
+// Documentation: https://zellij.dev/documentation/
+
+// =============================================================================
+// General Settings
+// =============================================================================
+
+// Default shell
+default_shell "zsh"
+
+// Theme
+theme "tokyo-night"
+
+// Copy on select
+copy_on_select true
+
+// Scrollback buffer size (lines)
+scroll_buffer_size 50000
+
+// Pane frames
+pane_frames true
+
+// Auto-layout on pane creation
+auto_layout true
+
+// Default layout
+default_layout "compact"
+
+// Session serialization for persistence
+session_serialization true
+
+// Simplified UI mode (recommended for beginners)
+simplified_ui false
+
+// Mouse mode
+mouse_mode true
+
+// Mirror session
+mirror_session false
+
+// =============================================================================
+// Keybindings
+// =============================================================================
+// Mode: locked, normal, pane, tab, resize, move, search, session, scroll, tmux
+
+keybinds clear-defaults=true {
+    // Normal mode - default mode
+    normal {
+        // Lock mode (disable all keybindings)
+        bind "Ctrl g" { SwitchToMode "locked"; }
+
+        // Pane management
+        bind "Ctrl p" { SwitchToMode "pane"; }
+        bind "Alt n" { NewPane; }
+        bind "Alt h" { MoveFocusOrTab "Left"; }
+        bind "Alt l" { MoveFocusOrTab "Right"; }
+        bind "Alt j" { MoveFocus "Down"; }
+        bind "Alt k" { MoveFocus "Up"; }
+        bind "Alt [" { PreviousSwapLayout; }
+        bind "Alt ]" { NextSwapLayout; }
+
+        // Tab management
+        bind "Ctrl t" { SwitchToMode "tab"; }
+        bind "Alt 1" { GoToTab 1; }
+        bind "Alt 2" { GoToTab 2; }
+        bind "Alt 3" { GoToTab 3; }
+        bind "Alt 4" { GoToTab 4; }
+        bind "Alt 5" { GoToTab 5; }
+        bind "Alt 6" { GoToTab 6; }
+        bind "Alt 7" { GoToTab 7; }
+        bind "Alt 8" { GoToTab 8; }
+        bind "Alt 9" { GoToTab 9; }
+
+        // Resize mode
+        bind "Ctrl n" { SwitchToMode "resize"; }
+
+        // Move mode
+        bind "Ctrl m" { SwitchToMode "move"; }
+
+        // Search mode
+        bind "Ctrl s" { SwitchToMode "scroll"; }
+        bind "Ctrl f" { SwitchToMode "search"; }
+
+        // Session management
+        bind "Ctrl o" { SwitchToMode "session"; }
+
+        // Quick actions
+        bind "Ctrl q" { Quit; }
+        bind "Alt f" { ToggleFocusFullscreen; }
+        bind "Alt =" { Resize "Increase"; }
+        bind "Alt -" { Resize "Decrease"; }
+    }
+
+    // Locked mode - all keys disabled except unlock
+    locked {
+        bind "Ctrl g" { SwitchToMode "normal"; }
+    }
+
+    // Pane mode
+    pane {
+        bind "Esc" "Ctrl c" { SwitchToMode "normal"; }
+        bind "h" "Left" { MoveFocus "Left"; }
+        bind "j" "Down" { MoveFocus "Down"; }
+        bind "k" "Up" { MoveFocus "Up"; }
+        bind "l" "Right" { MoveFocus "Right"; }
+        bind "n" { NewPane; SwitchToMode "normal"; }
+        bind "d" { NewPane "Down"; SwitchToMode "normal"; }
+        bind "r" { NewPane "Right"; SwitchToMode "normal"; }
+        bind "x" { CloseFocus; SwitchToMode "normal"; }
+        bind "f" { ToggleFocusFullscreen; SwitchToMode "normal"; }
+        bind "z" { TogglePaneFrames; SwitchToMode "normal"; }
+        bind "w" { ToggleFloatingPanes; SwitchToMode "normal"; }
+        bind "e" { TogglePaneEmbedOrFloating; SwitchToMode "normal"; }
+        bind "c" { SwitchToMode "renamepane"; PaneNameInput 0; }
+    }
+
+    // Tab mode
+    tab {
+        bind "Esc" "Ctrl c" { SwitchToMode "normal"; }
+        bind "h" "Left" { GoToPreviousTab; }
+        bind "l" "Right" { GoToNextTab; }
+        bind "n" { NewTab; SwitchToMode "normal"; }
+        bind "x" { CloseTab; SwitchToMode "normal"; }
+        bind "s" { ToggleActiveSyncTab; SwitchToMode "normal"; }
+        bind "b" { BreakPane; SwitchToMode "normal"; }
+        bind "]" { BreakPaneRight; SwitchToMode "normal"; }
+        bind "[" { BreakPaneLeft; SwitchToMode "normal"; }
+        bind "1" { GoToTab 1; SwitchToMode "normal"; }
+        bind "2" { GoToTab 2; SwitchToMode "normal"; }
+        bind "3" { GoToTab 3; SwitchToMode "normal"; }
+        bind "4" { GoToTab 4; SwitchToMode "normal"; }
+        bind "5" { GoToTab 5; SwitchToMode "normal"; }
+        bind "6" { GoToTab 6; SwitchToMode "normal"; }
+        bind "7" { GoToTab 7; SwitchToMode "normal"; }
+        bind "8" { GoToTab 8; SwitchToMode "normal"; }
+        bind "9" { GoToTab 9; SwitchToMode "normal"; }
+        bind "Tab" { ToggleTab; }
+        bind "c" { SwitchToMode "renametab"; TabNameInput 0; }
+    }
+
+    // Resize mode
+    resize {
+        bind "Esc" "Ctrl c" { SwitchToMode "normal"; }
+        bind "h" "Left" { Resize "Increase Left"; }
+        bind "j" "Down" { Resize "Increase Down"; }
+        bind "k" "Up" { Resize "Increase Up"; }
+        bind "l" "Right" { Resize "Increase Right"; }
+        bind "H" { Resize "Decrease Left"; }
+        bind "J" { Resize "Decrease Down"; }
+        bind "K" { Resize "Decrease Up"; }
+        bind "L" { Resize "Decrease Right"; }
+        bind "=" "+" { Resize "Increase"; }
+        bind "-" { Resize "Decrease"; }
+    }
+
+    // Move mode
+    move {
+        bind "Esc" "Ctrl c" { SwitchToMode "normal"; }
+        bind "n" "Tab" { MovePane; }
+        bind "h" "Left" { MovePane "Left"; }
+        bind "j" "Down" { MovePane "Down"; }
+        bind "k" "Up" { MovePane "Up"; }
+        bind "l" "Right" { MovePane "Right"; }
+    }
+
+    // Scroll mode
+    scroll {
+        bind "Esc" "Ctrl c" { SwitchToMode "normal"; }
+        bind "e" { EditScrollback; SwitchToMode "normal"; }
+        bind "/" { SwitchToMode "entersearch"; SearchInput 0; }
+        bind "j" "Down" { ScrollDown; }
+        bind "k" "Up" { ScrollUp; }
+        bind "Ctrl f" "PageDown" { PageScrollDown; }
+        bind "Ctrl b" "PageUp" { PageScrollUp; }
+        bind "d" { HalfPageScrollDown; }
+        bind "u" { HalfPageScrollUp; }
+        bind "g" { ScrollToTop; }
+        bind "G" { ScrollToBottom; }
+    }
+
+    // Search mode
+    search {
+        bind "Esc" "Ctrl c" { SwitchToMode "normal"; }
+        bind "j" "Down" { ScrollDown; }
+        bind "k" "Up" { ScrollUp; }
+        bind "Ctrl f" "PageDown" { PageScrollDown; }
+        bind "Ctrl b" "PageUp" { PageScrollUp; }
+        bind "d" { HalfPageScrollDown; }
+        bind "u" { HalfPageScrollUp; }
+        bind "n" { Search "down"; }
+        bind "N" { Search "up"; }
+        bind "c" { SearchToggleOption "CaseSensitivity"; }
+        bind "w" { SearchToggleOption "Wrap"; }
+        bind "o" { SearchToggleOption "WholeWord"; }
+    }
+
+    // Enter search mode
+    entersearch {
+        bind "Esc" "Ctrl c" { SwitchToMode "scroll"; }
+        bind "Enter" { SwitchToMode "search"; }
+    }
+
+    // Session mode
+    session {
+        bind "Esc" "Ctrl c" { SwitchToMode "normal"; }
+        bind "d" { Detach; }
+        bind "w" {
+            LaunchOrFocusPlugin "session-manager" {
+                floating true
+                move_to_focused_tab true
+            };
+            SwitchToMode "normal";
+        }
+    }
+
+    // Rename tab mode
+    renametab {
+        bind "Ctrl c" { SwitchToMode "normal"; }
+        bind "Esc" { UndoRenameTab; SwitchToMode "tab"; }
+        bind "Enter" { SwitchToMode "normal"; }
+    }
+
+    // Rename pane mode
+    renamepane {
+        bind "Ctrl c" { SwitchToMode "normal"; }
+        bind "Esc" { UndoRenamePane; SwitchToMode "pane"; }
+        bind "Enter" { SwitchToMode "normal"; }
+    }
+
+    // Shared bindings across most modes
+    shared_except "locked" "renametab" "renamepane" {
+        bind "Ctrl g" { SwitchToMode "locked"; }
+        bind "Ctrl q" { Quit; }
+    }
+}
+
+// =============================================================================
+// Plugins
+// =============================================================================
+plugins {
+    tab-bar location="zellij:tab-bar"
+    status-bar location="zellij:status-bar"
+    strider location="zellij:strider"
+    compact-bar location="zellij:compact-bar"
+    session-manager location="zellij:session-manager"
+    welcome-screen location="zellij:session-manager" {
+        welcome_screen true
+    }
+    filepicker location="zellij:strider" {
+        cwd "/"
+    }
+}
+
+// =============================================================================
+// Themes
+// =============================================================================
+themes {
+    tokyo-night {
+        fg "#a9b1d6"
+        bg "#1a1b26"
+        black "#32344a"
+        red "#f7768e"
+        green "#9ece6a"
+        yellow "#e0af68"
+        blue "#7aa2f7"
+        magenta "#ad8ee6"
+        cyan "#449dab"
+        white "#787c99"
+        orange "#ff9e64"
+    }
+
+    catppuccin-mocha {
+        fg "#cdd6f4"
+        bg "#1e1e2e"
+        black "#45475a"
+        red "#f38ba8"
+        green "#a6e3a1"
+        yellow "#f9e2af"
+        blue "#89b4fa"
+        magenta "#f5c2e7"
+        cyan "#94e2d5"
+        white "#bac2de"
+        orange "#fab387"
+    }
+
+    gruvbox-dark {
+        fg "#ebdbb2"
+        bg "#282828"
+        black "#3c3836"
+        red "#cc241d"
+        green "#98971a"
+        yellow "#d79921"
+        blue "#458588"
+        magenta "#b16286"
+        cyan "#689d6a"
+        white "#a89984"
+        orange "#d65d0e"
+    }
+}
+
+// =============================================================================
+// UI Settings
+// =============================================================================
+ui {
+    pane_frames {
+        rounded_corners true
+        hide_session_name false
+    }
+}
