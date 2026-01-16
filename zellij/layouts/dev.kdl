@@ -1,0 +1,38 @@
+// =============================================================================
+// Development Layout
+// =============================================================================
+// A typical development layout with editor, terminal, and git panes
+
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="zellij:compact-bar"
+        }
+        children
+    }
+
+    tab name="editor" focus=true {
+        pane split_direction="vertical" {
+            pane name="nvim" size="70%" {
+                command "nvim"
+            }
+            pane split_direction="horizontal" size="30%" {
+                pane name="terminal"
+                pane name="git" {
+                    command "lazygit"
+                }
+            }
+        }
+    }
+
+    tab name="terminal" {
+        pane
+    }
+
+    tab name="logs" {
+        pane split_direction="horizontal" {
+            pane name="logs"
+            pane name="watch"
+        }
+    }
+}
