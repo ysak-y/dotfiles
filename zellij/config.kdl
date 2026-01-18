@@ -54,7 +54,7 @@ keybinds clear-defaults=true {
 
         // Pane management
         bind "Ctrl p" { SwitchToMode "pane"; }
-        bind "Alt n" { NewPane; }
+        bind "Alt n" { NewPane "Right"; }
         bind "Alt h" { MoveFocusOrTab "Left"; }
         bind "Alt l" { MoveFocusOrTab "Right"; }
         bind "Alt j" { MoveFocus "Down"; }
@@ -106,7 +106,7 @@ keybinds clear-defaults=true {
         bind "j" "Down" { MoveFocus "Down"; }
         bind "k" "Up" { MoveFocus "Up"; }
         bind "l" "Right" { MoveFocus "Right"; }
-        bind "n" { NewPane; SwitchToMode "normal"; }
+        bind "n" { NewPane "Right"; SwitchToMode "normal"; }
         bind "d" { NewPane "Down"; SwitchToMode "normal"; }
         bind "r" { NewPane "Right"; SwitchToMode "normal"; }
         bind "x" { CloseFocus; SwitchToMode "normal"; }
