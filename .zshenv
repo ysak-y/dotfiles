@@ -15,9 +15,11 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 
 # Language and Locale
-export LANG="${LANG:-en_US.UTF-8}"
+export LANG=ja_JP.UTF-8
+export LC_ALL=ja_JP.UTF-8
+#export LANG="${LANG:-en_US.UTF-8}"
 export LC_CTYPE="${LC_CTYPE:-en_US.UTF-8}"
-export LC_ALL=""
+#export LC_ALL=""
 
 # History
 export HISTFILE="${XDG_STATE_HOME}/zsh/history"
