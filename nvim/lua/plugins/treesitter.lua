@@ -7,7 +7,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     version = false,
     build = ":TSUpdate",
-    event = { "BufReadPre", "BufNewFile" },
+    lazy = false,  -- Load immediately to avoid issues with telescope preview
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
     },
