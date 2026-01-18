@@ -52,9 +52,9 @@ if [[ -d "$HOME/.rbenv" ]]; then
   path=("$HOME/.rbenv/bin" $path)
 fi
 
-# Node.js (nodebrew)
-if [[ -d "$HOME/.nodebrew" ]]; then
-  path=("$HOME/.nodebrew/current/bin" $path)
+# Node.js (fnm)
+if command -v fnm &> /dev/null; then
+  eval "$(fnm env --use-on-cd)"
 fi
 
 # Rust/Cargo
