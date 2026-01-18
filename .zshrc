@@ -75,11 +75,17 @@ fi
 # =============================================================================
 # Completions
 # =============================================================================
+
+# Remove non-existent directories from fpath
+fpath=(${fpath:#/usr/local/share/zsh/site-functions})
+fpath=($^fpath(N))
+
 autoload -Uz compinit
-if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
-  compinit
+# Use -u to ignore insecure directories, -C to skip security check for speed
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+  compinit -u
 else
-  compinit -C
+  compinit -u -C
 fi
 
 # Completion styling
