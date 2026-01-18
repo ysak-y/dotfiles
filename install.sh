@@ -136,6 +136,27 @@ if [[ -d "$DOTFILES_DIR/colors" ]]; then
 fi
 
 # =============================================================================
+# Agent Browser Installation (for Claude browser automation)
+# =============================================================================
+print_header "Installing Agent Browser"
+
+if command -v npm &> /dev/null; then
+  # Install agent-browser globally
+  if ! command -v agent-browser &> /dev/null; then
+    npm install -g agent-browser
+    print_success "Installed agent-browser globally"
+  else
+    print_success "agent-browser already installed"
+  fi
+
+  # Install Chromium for agent-browser
+  agent-browser install
+  print_success "Installed Chromium for agent-browser"
+else
+  print_warning "npm not found. Install Node.js (fnm) first, then re-run install.sh"
+fi
+
+# =============================================================================
 # Post-installation notes
 # =============================================================================
 echo ""
