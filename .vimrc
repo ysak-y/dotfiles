@@ -4,48 +4,64 @@ endif
 
 " Deinで管理するディレクトリを指定
 set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
-call dein#begin(expand('~/.vim/dein'))
+if dein#load_state('$HOME/.vim/dein')
+  call dein#begin(expand('$HOME/.vim/dein'))
 
-call dein#add('Shougo/dein.vim')
-call dein#add('Shougo/vimproc.vim', {'build': 'make'})
-call dein#add('Shougo/neocomplete.vim')
-call dein#add('Shougo/neomru.vim')
-call dein#add('Shougo/neosnippet')
-call dein#add('Shougo/neosnippet-snippets')
-call dein#add('Shougo/denite.nvim')
-call dein#add("cohama/lexima.vim")
+  call dein#add('Shougo/dein.vim')
+  call dein#add('Shougo/vimproc.vim', {'build': 'make'})
+  call dein#add('Shougo/neocomplete.vim')
+  call dein#add('Shougo/neomru.vim')
+  call dein#add('Shougo/neosnippet')
+  call dein#add('Shougo/neosnippet-snippets')
+  call dein#add('Shougo/denite.nvim')
+  call dein#add('cohama/lexima.vim')
 
-" Ruby向けにendを自動挿入してくれる
-call dein#add('tpope/vim-endwise')
+  " Ruby向けにendを自動挿入してくれる
+  call dein#add('tpope/vim-endwise')
 
-" 自動で括弧を締める"
-call dein#add('Townk/vim-autoclose')
+  " ファイルをtree表示してする
+  call dein#add('scrooloose/nerdtree')
+  nnoremap <silent><C-e> :NERDTreeToggle<CR>
 
-" ファイルをtree表示してする
-call dein#add('scrooloose/nerdtree')
-nnoremap <silent><C-e> :NERDTreeToggle<CR>
+  " 行末の半角スペースを可視化
+  call dein#add('bronson/vim-trailing-whitespace')
 
-" 行末の半角スペースを可視化
- call dein#add('bronson/vim-trailing-whitespace')
+  " ログファイルを色づけしてくれる
+  call dein#add('vim-scripts/AnsiEsc.vim')
 
-" ログファイルを色づけしてくれる
-call dein#add('vim-scripts/AnsiEsc.vim')
+  " vimでペーストする際に、自動でpaste modeにする
+  call dein#add('ConradIrwin/vim-bracketed-paste')
 
-" vimでペーストする際に、自動でpaste modeにする
-call dein#add('ConradIrwin/vim-bracketed-paste')
+  " vimの画面の一番下にあるステータスラインの表示内容が強化
+  call dein#add('itchyny/lightline.vim')
 
-" vimの画面の一番下にあるステータスラインの表示内容が強化
-call dein#add('itchyny/lightline.vim')
+  " deoplete
+  " call dein#add('Shougo/deoplete.nvim')
+  " if !has('nvim')
+  "   call dein#add('roxma/nvim-yarp')
+  "   call dein#add('roxma/vim-hug-neovim-rpc')
+  " endif
+  " let g:deoplete#enable_at_startup = 1
 
-" deoplete
-" call dein#add('Shougo/deoplete.nvim')
-" if !has('nvim')
-"   call dein#add('roxma/nvim-yarp')
-"   call dein#add('roxma/vim-hug-neovim-rpc')
-" endif
-" let g:deoplete#enable_at_startup = 1
+  call dein#end()
+  call dein#save_state()
+endif
 
-call dein#end()
+let g:lexima#default_rules = 1
+let g:lexima_enable_basic_rules = 1
+let g:lexima_enable_endwise_rules = 1
+let g:lexima_enable_newline_rules = 1
+
+inoremap { {}<LEFT>
+inoremap [ []<LEFT>
+inoremap ( ()<LEFT>
+inoremap " ""<LEFT>
+inoremap ' ''<LEFT>
+vnoremap { "zdi^V{<C-R>z}<ESC>
+vnoremap [ "zdi^V[<C-R>z]<ESC>
+vnoremap ( "zdi^V(<C-R>z)<ESC>
+vnoremap " "zdi^V"<C-R>z^V"<ESC>
+vnoremap ' "zdi'<C-R>z'<ESC>
 
 "pluginのインストール
 if dein#check_install()
