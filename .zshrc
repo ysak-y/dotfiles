@@ -110,6 +110,12 @@ setopt INC_APPEND_HISTORY        # Write to the history file immediately, not wh
 setopt SHARE_HISTORY             # Share history between all sessions
 
 # =============================================================================
+# Multibyte and Japanese Input Support
+# =============================================================================
+setopt COMBINING_CHARS           # Combine zero-length punctuation characters (accents) with the base character
+setopt PRINT_EIGHT_BIT           # Print eight bit characters literally in completion lists
+
+# =============================================================================
 # Key Bindings
 # =============================================================================
 bindkey -e  # Emacs keybindings

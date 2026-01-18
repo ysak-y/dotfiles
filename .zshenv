@@ -14,9 +14,10 @@ export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 export EDITOR="nvim"
 export VISUAL="nvim"
 
-# Language
-export LANG="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
+# Language and Locale
+export LANG="${LANG:-en_US.UTF-8}"
+export LC_CTYPE="${LC_CTYPE:-en_US.UTF-8}"
+export LC_ALL=""
 
 # History
 export HISTFILE="${XDG_STATE_HOME}/zsh/history"
