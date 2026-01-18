@@ -47,42 +47,30 @@ zinit light zsh-users/zsh-history-substring-search
 zinit light agkozak/zsh-z
 
 # =============================================================================
-# Modern CLI Tools (lazy load)
+# Modern CLI Tools
 # =============================================================================
+# These tools should be installed via your system's package manager:
+#   macOS:  brew install fzf eza zoxide fd ripgrep bat git-delta lazygit
+#   Ubuntu: sudo apt install fzf fd-find ripgrep bat
+#           # eza, zoxide, delta, lazygit: install from GitHub releases or cargo
+#   Arch:   sudo pacman -S fzf eza zoxide fd ripgrep bat git-delta lazygit
 
-# fzf - Fuzzy finder
-zinit ice from"gh-r" as"program"
-zinit light junegunn/fzf
+# fzf integration (if installed)
+if command -v fzf &> /dev/null; then
+  # Source fzf keybindings and completion
+  [[ -f /usr/share/fzf/key-bindings.zsh ]] && source /usr/share/fzf/key-bindings.zsh
+  [[ -f /usr/share/fzf/completion.zsh ]] && source /usr/share/fzf/completion.zsh
+  # Homebrew location
+  [[ -f "${HOMEBREW_PREFIX:-/opt/homebrew}/opt/fzf/shell/key-bindings.zsh" ]] && \
+    source "${HOMEBREW_PREFIX:-/opt/homebrew}/opt/fzf/shell/key-bindings.zsh"
+  [[ -f "${HOMEBREW_PREFIX:-/opt/homebrew}/opt/fzf/shell/completion.zsh" ]] && \
+    source "${HOMEBREW_PREFIX:-/opt/homebrew}/opt/fzf/shell/completion.zsh"
+fi
 
-# eza - Modern ls replacement
-zinit ice from"gh-r" as"program" mv"eza* -> eza"
-zinit light eza-community/eza
-
-# zoxide - Smarter cd
-zinit ice from"gh-r" as"program" \
-  atclone"./zoxide init zsh > init.zsh" \
-  atpull"%atclone" src"init.zsh"
-zinit light ajeetdsouza/zoxide
-
-# fd - Modern find
-zinit ice from"gh-r" as"program" mv"fd*/fd -> fd"
-zinit light sharkdp/fd
-
-# ripgrep - Fast grep
-zinit ice from"gh-r" as"program" mv"ripgrep*/rg -> rg"
-zinit light BurntSushi/ripgrep
-
-# bat - Better cat
-zinit ice from"gh-r" as"program" mv"bat*/bat -> bat"
-zinit light sharkdp/bat
-
-# delta - Better git diff
-zinit ice from"gh-r" as"program" mv"delta*/delta -> delta"
-zinit light dandavison/delta
-
-# lazygit - Git TUI
-zinit ice from"gh-r" as"program" mv"lazygit* -> lazygit"
-zinit light jesseduffield/lazygit
+# zoxide integration (if installed)
+if command -v zoxide &> /dev/null; then
+  eval "$(zoxide init zsh)"
+fi
 
 # =============================================================================
 # Completions
