@@ -5,6 +5,7 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "master",  -- 後方互換性のためmasterを使用（textobjectsとの互換性）
     version = false,
     build = ":TSUpdate",
     lazy = false,  -- Load immediately to avoid issues with telescope preview
