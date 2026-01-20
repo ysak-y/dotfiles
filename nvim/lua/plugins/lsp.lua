@@ -40,6 +40,9 @@ return {
       },
       automatic_installation = true,
     },
+    config = function(_, opts)
+      require("mason-lspconfig").setup(opts)
+    end,
   },
 
   -- LSP Configuration
@@ -108,53 +111,55 @@ return {
       -- LSP capabilities (for autocompletion)
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      -- Setup handlers for mason-lspconfig
-      require("mason-lspconfig").setup_handlers({
-        -- Default handler
-        function(server_name)
-          require("lspconfig")[server_name].setup({
-            on_attach = on_attach,
-            capabilities = capabilities,
-          })
-        end,
+      -- Setup handlers for mason-lspconfig (v2.x API)
+      require("mason-lspconfig").setup({
+        handlers = {
+          -- Default handler
+          function(server_name)
+            require("lspconfig")[server_name].setup({
+              on_attach = on_attach,
+              capabilities = capabilities,
+            })
+          end,
 
-        -- Custom handlers for specific servers
-        ["lua_ls"] = function()
-          require("lspconfig").lua_ls.setup({
-            on_attach = on_attach,
-            capabilities = capabilities,
-            settings = {
-              Lua = {
-                diagnostics = {
-                  globals = { "vim" },
-                },
-                workspace = {
-                  library = vim.api.nvim_get_runtime_file("", true),
-                  checkThirdParty = false,
-                },
-                telemetry = {
-                  enable = false,
+          -- Custom handlers for specific servers
+          ["lua_ls"] = function()
+            require("lspconfig").lua_ls.setup({
+              on_attach = on_attach,
+              capabilities = capabilities,
+              settings = {
+                Lua = {
+                  diagnostics = {
+                    globals = { "vim" },
+                  },
+                  workspace = {
+                    library = vim.api.nvim_get_runtime_file("", true),
+                    checkThirdParty = false,
+                  },
+                  telemetry = {
+                    enable = false,
+                  },
                 },
               },
-            },
-          })
-        end,
+            })
+          end,
 
-        ["pyright"] = function()
-          require("lspconfig").pyright.setup({
-            on_attach = on_attach,
-            capabilities = capabilities,
-            settings = {
-              python = {
-                analysis = {
-                  typeCheckingMode = "basic",
-                  autoSearchPaths = true,
-                  useLibraryCodeForTypes = true,
+          ["pyright"] = function()
+            require("lspconfig").pyright.setup({
+              on_attach = on_attach,
+              capabilities = capabilities,
+              settings = {
+                python = {
+                  analysis = {
+                    typeCheckingMode = "basic",
+                    autoSearchPaths = true,
+                    useLibraryCodeForTypes = true,
+                  },
                 },
               },
-            },
-          })
-        end,
+            })
+          end,
+        },
       })
     end,
   },
