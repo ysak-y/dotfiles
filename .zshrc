@@ -166,10 +166,39 @@ if command -v rg &> /dev/null; then
   alias grep="rg"
 fi
 
-# zellij aliases
-alias zj="zellij"
-alias zja="zellij attach"
-alias zjl="zellij list-sessions"
+# Zellij smart attach function
+zj() {
+    # Prevent nested sessions
+    if [[ -n "$ZELLIJ" ]]; then
+        echo "Already inside a zellij session (ID: $ZELLIJ)"
+        return 1
+    fi
+
+    # If explicit session name provided, attach or create it
+    if [[ $# -gt 0 ]]; then
+        zellij attach "$1" --create
+        return
+    fi
+
+    # Get most recent active session (skip EXITED)
+    local recent=$(zellij list-sessions -s --reverse --no-formatting 2>/dev/null | \
+                   grep -v "EXITED" | head -1)
+
+    if [[ -n "$recent" ]]; then
+        echo "Attaching to session: $recent"
+        zellij attach "$recent"
+    else
+        zellij
+    fi
+}
+
+# Enhanced zellij aliases
+alias zjn="zellij"                           # Force new session
+alias zja="zellij attach"                    # Attach to specific session
+alias zjl="zellij list-sessions"             # List all sessions
+alias zjk="zellij kill-session"              # Kill specific session
+alias zjd="zellij --layout dev"              # New session with dev layout
+alias zjc="zellij --layout compact"          # New session with compact layout
 
 # Git shortcuts
 alias ga="git add"

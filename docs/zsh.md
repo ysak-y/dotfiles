@@ -75,9 +75,20 @@
 
 | エイリアス | コマンド | 説明 |
 |-----------|---------|------|
-| `zj` | `zellij` | Zellij起動 |
-| `zja` | `zellij attach` | セッションにアタッチ |
+| `zj` | スマートアタッチ関数 | 最新セッションに自動アタッチ、またはなければ新規作成 |
+| `zj <name>` | `zellij attach <name> --create` | 指定セッションにアタッチ、またはなければ新規作成 |
+| `zjn` | `zellij` | 強制的に新規セッション開始 |
+| `zja` | `zellij attach` | セッションにアタッチ（対話的選択） |
 | `zjl` | `zellij list-sessions` | セッション一覧 |
+| `zjk` | `zellij kill-session` | セッション終了 |
+| `zjd` | `zellij --layout dev` | dev レイアウトで新規セッション開始 |
+| `zjc` | `zellij --layout compact` | compact レイアウトで新規セッション開始 |
+
+**`zj` スマートアタッチ機能:**
+- アクティブなセッションがある場合、最新のものに自動アタッチ
+- アクティブなセッションがない場合、新規セッションを作成
+- すでにzellij内にいる場合、ネスト防止警告を表示
+- EXITED状態のセッションは自動的にスキップ
 
 ### ディレクトリ移動
 

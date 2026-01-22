@@ -195,9 +195,25 @@ Machine-specific settings can be added to `~/.zshrc.local` (not tracked in git).
 - `dev.kdl`: Development layout with multiple panes
 
 **Session management:**
-- `zellij` or `zj`: Start new session
-- `zellij attach` or `zja`: Attach to existing session
-- `zellij list-sessions` or `zjl`: List all sessions
+- `zj`: Smart auto-attach - Attaches to most recent active session, or creates new if none exist
+  - Prevents nested sessions (shows warning if already inside zellij)
+  - Filters out EXITED sessions automatically
+  - `zj <session-name>`: Attach to or create specific named session
+- `zjn`: Force create new session (even if other sessions exist)
+- `zja <session-name>`: Attach to specific session by name
+- `zjl`: List all sessions
+- `zjk <session-name>`: Kill specific session
+- `zjd`: Create new session with dev layout
+- `zjc`: Create new session with compact layout
+
+**Examples:**
+```bash
+zj              # Auto-attach to most recent session, or create new
+zj myproject    # Attach to or create "myproject" session
+zjn             # Always create new session
+zjl             # List all active sessions
+zjk old-session # Kill specific session
+```
 
 ## Shared Theme: Tokyo Night
 
