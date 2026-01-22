@@ -210,6 +210,7 @@ alias gpl="git pull"
 alias gps="git push"
 alias gl="git log --oneline --graph --decorate -10"
 alias gla="git log --oneline --graph --decorate --all"
+alias gca="git ai-commit"
 
 # Useful shortcuts
 alias ..="cd .."

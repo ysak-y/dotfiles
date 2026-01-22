@@ -157,6 +157,29 @@ else
 fi
 
 # =============================================================================
+# git-ai-commit Installation (AI-powered commit messages)
+# =============================================================================
+print_header "Installing git-ai-commit"
+
+if command -v brew &> /dev/null; then
+  # Tap repository if not already tapped
+  if ! brew tap | grep -q "takai/tap"; then
+    brew tap takai/tap
+    print_success "Tapped takai/tap repository"
+  fi
+
+  # Install git-ai-commit
+  if ! command -v git-ai-commit &> /dev/null; then
+    brew install git-ai-commit
+    print_success "Installed git-ai-commit"
+  else
+    print_success "git-ai-commit already installed"
+  fi
+else
+  print_warning "Homebrew not found. Install Homebrew first, then re-run install.sh"
+fi
+
+# =============================================================================
 # Post-installation notes
 # =============================================================================
 echo ""
