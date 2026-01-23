@@ -86,6 +86,12 @@ return {
     ft = { "ruby", "eruby" },
   },
 
+  -- vim-endwise: Auto-insert 'end' for Ruby, Bash, Lua, etc.
+  {
+    "tpope/vim-endwise",
+    ft = { "ruby", "eruby", "lua", "bash", "sh", "zsh", "vim" },
+  },
+
   -- Comment
   {
     "numToStr/Comment.nvim",
