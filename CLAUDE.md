@@ -146,6 +146,74 @@ Aliases are conditionally set only if the modern tool is installed, falling back
 - Formatters run automatically on save for supported file types
 - LSP diagnostic integration via `trouble.nvim`
 
+### LSP Navigation and Code Intelligence
+
+Neovim provides VSCode-like code navigation and intelligence through LSP (Language Server Protocol). All keybindings are configured in `nvim/lua/plugins/lsp.lua:82-98`.
+
+**Code Navigation (VSCode equivalent features):**
+- `gd` - Go to definition (like Ctrl+Click in VSCode)
+- `gr` - Show all references (where the function/variable is used)
+- `gD` - Go to declaration
+- `gi` - Go to implementation
+- `<leader>D` - Go to type definition
+- `K` - Show hover information (documentation, type info)
+- `<C-k>` - Show signature help (function parameters)
+
+**Code Editing:**
+- `<leader>rn` - Rename symbol (refactors all references)
+- `<leader>ca` - Code actions (quick fixes, refactoring suggestions)
+
+**Diagnostics (Errors/Warnings):**
+- `<leader>d` - Show diagnostic in floating window
+- `[d` - Go to previous diagnostic
+- `]d` - Go to next diagnostic
+
+**Supported Languages (auto-configured via Mason):**
+- Lua (`lua_ls`)
+- Python (`pyright`)
+- TypeScript/JavaScript (`ts_ls`)
+- Rust (`rust_analyzer`)
+- JSON (`jsonls`)
+- YAML (`yamlls`)
+- HTML (`html`)
+- CSS (`cssls`)
+- Tailwind CSS (`tailwindcss`)
+- ESLint
+
+**Usage Example:**
+1. Place cursor on a function name
+2. Press `gd` to jump to definition
+3. Press `gr` to see all places where it's used
+4. Press `<C-o>` to jump back to previous location
+
+### Telescope Integration
+
+Telescope provides fuzzy finding with live preview, complementing LSP navigation with project-wide search capabilities. Keybindings are in `nvim/lua/plugins/telescope.lua:19-32`.
+
+**File Navigation:**
+- `<leader>ff` - Find files (fuzzy search by filename)
+- `<leader>fg` - Live grep (search text across all files)
+- `<leader>fb` - List open buffers
+- `<leader>fr` - Recent files
+- `<leader>fc` - Grep word under cursor
+- `<leader><leader>` - Quick buffer switcher
+
+**LSP Integration (Visual search for symbols):**
+- `<leader>fs` - Document symbols (functions, classes, variables in current file)
+- `<leader>fw` - Workspace symbols (search symbols across entire project)
+- `<leader>fd` - Project diagnostics (all errors/warnings)
+
+**Git Integration:**
+- `<leader>gc` - Git commits
+- `<leader>gs` - Git status
+- `<leader>gb` - Git branches
+
+**Tips:**
+- All Telescope pickers support fuzzy matching (type parts of filename/text)
+- Use `<C-j>/<C-k>` to move selection up/down
+- Use `<C-v>` to open in vertical split, `<C-x>` for horizontal split
+- Files in `.gitignore` are automatically excluded from searches
+
 ## ZSH Configuration
 
 ### Plugin Manager: Zinit

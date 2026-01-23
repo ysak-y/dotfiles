@@ -31,6 +31,7 @@ return {
         "pyright",
         "ts_ls",
         "rust_analyzer",
+        "ruby_lsp",
         "jsonls",
         "yamlls",
         "html",

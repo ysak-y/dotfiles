@@ -80,6 +80,12 @@ return {
     },
   },
 
+  -- vim-rails: Rails navigation and commands
+  {
+    "tpope/vim-rails",
+    ft = { "ruby", "eruby" },
+  },
+
   -- Comment
   {
     "numToStr/Comment.nvim",
@@ -208,6 +214,7 @@ return {
       formatters_by_ft = {
         lua = { "stylua" },
         python = { "black", "isort" },
+        ruby = { "rubocop" },
         javascript = { "prettierd", "prettier", stop_after_first = true },
         typescript = { "prettierd", "prettier", stop_after_first = true },
         javascriptreact = { "prettierd", "prettier", stop_after_first = true },
@@ -239,6 +246,7 @@ return {
         javascriptreact = { "eslint_d" },
         typescriptreact = { "eslint_d" },
         python = { "ruff" },
+        ruby = { "rubocop" },
       }
 
       vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
