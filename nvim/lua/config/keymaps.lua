@@ -33,11 +33,17 @@ keymap("n", "<C-j>", "<C-w>j", opts)
 keymap("n", "<C-k>", "<C-w>k", opts)
 keymap("n", "<C-l>", "<C-w>l", opts)
 
--- Resize with arrows
-keymap("n", "<C-Up>", ":resize -2<CR>", opts)
-keymap("n", "<C-Down>", ":resize +2<CR>", opts)
-keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
-keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
+-- Navigate between splits with arrow keys
+keymap("n", "<C-Left>", "<C-w>h", opts)
+keymap("n", "<C-Down>", "<C-w>j", opts)
+keymap("n", "<C-Up>", "<C-w>k", opts)
+keymap("n", "<C-Right>", "<C-w>l", opts)
+
+-- Resize with arrows (using Alt instead of Ctrl)
+keymap("n", "<A-Up>", ":resize -2<CR>", opts)
+keymap("n", "<A-Down>", ":resize +2<CR>", opts)
+keymap("n", "<A-Left>", ":vertical resize -2<CR>", opts)
+keymap("n", "<A-Right>", ":vertical resize +2<CR>", opts)
 
 -- Tabs
 keymap("n", "<leader>to", ":tabnew<CR>", { desc = "New tab" })
