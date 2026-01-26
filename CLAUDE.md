@@ -305,6 +305,241 @@ This creates visual consistency across terminal, prompt, editor, and multiplexer
 - `git copr <number>` - checkout PR by number
 - `git ls` - log with custom format
 
+## git-ai-commit Configuration
+
+git-ai-commit generates AI-powered commit messages following best practices. This configuration sets Japanese as the default language for commit messages while maintaining Conventional Commits format.
+
+### Installation
+
+Already installed via Homebrew in `install.sh`. Configuration is automatically symlinked to `~/.config/git-ai-commit/` on installation.
+
+### Default Behavior: Japanese Commit Messages
+
+The default configuration generates commit messages in Japanese using Conventional Commits format:
+
+```bash
+gca              # Generate and commit with Japanese message
+git ai-commit    # Explicit command (same as gca)
+```
+
+**Example output:**
+```
+feat(auth): ユーザー認証機能を追加
+
+JWT トークンベースの認証システムを実装しました。
+セキュリティを向上させるため、パスワードのハッシュ化にbcryptを使用しています。
+```
+
+**Type keywords** (feat, fix, docs, etc.) remain in English for Conventional Commits standard compliance and tool compatibility.
+
+### Language Override
+
+**Per-repository English messages:**
+
+Create `.git-ai-commit.toml` in the repository root:
+```toml
+prompt = "conventional"
+```
+
+This overrides the user-level Japanese configuration and uses the built-in English preset.
+
+**One-time English message:**
+```bash
+git ai-commit --prompt conventional
+```
+
+**One-time with custom context:**
+```bash
+git ai-commit --context "This fixes a critical security vulnerability"
+```
+
+### Custom Prompts
+
+Custom prompts are located in `git-ai-commit/prompts/`:
+- `japanese.md` - Japanese Conventional Commits (default)
+
+To create a new prompt, add a markdown file in the `prompts/` directory and reference it in your config:
+
+**User-level (dotfiles):**
+Edit `git-ai-commit/config.toml`:
+```toml
+prompt_file = "prompts/your-custom-prompt.md"
+```
+
+**Repository-level:**
+Create `.git-ai-commit.toml` in the repository:
+```toml
+prompt_file = "path/to/custom-prompt.md"
+```
+
+### Configuration Files
+
+**User-level configuration (Japanese default):**
+- Symlink location: `~/.config/git-ai-commit/config.toml`
+- Source in dotfiles: `git-ai-commit/config.toml`
+- Prompts directory: `git-ai-commit/prompts/`
+
+**Repository-level configuration (optional override):**
+- Location: `.git-ai-commit.toml` (in each repository root)
+- Not tracked in dotfiles
+- Add to `.gitignore` if needed (usually project-specific)
+
+**Configuration hierarchy (highest priority first):**
+1. Command-line flags (e.g., `--prompt conventional`)
+2. Repository-level `.git-ai-commit.toml`
+3. User-level `~/.config/git-ai-commit/config.toml`
+
+### Available Commands and Options
+
+**Basic usage:**
+```bash
+gca              # Alias for git ai-commit (configured in .zshrc)
+git ai-commit    # Generate commit message from staged changes
+```
+
+**Stage and commit:**
+```bash
+gca -a           # Stage all modified/deleted files, then commit
+gca -i file.txt  # Stage specific file, then commit
+```
+
+**Amend previous commit:**
+```bash
+gca --amend      # Replace previous commit message
+```
+
+**Debug and testing:**
+```bash
+git ai-commit --debug-prompt    # Show the prompt before execution
+git ai-commit --debug-command   # Show the LLM command before execution
+```
+
+**Custom prompts and context:**
+```bash
+git ai-commit --prompt conventional           # Use built-in English preset
+git ai-commit --prompt-file custom.md         # Use custom prompt file
+git ai-commit --context "Additional context"  # Add context to generation
+git ai-commit --context-file notes.txt        # Load context from file
+```
+
+### Conventional Commits Format
+
+git-ai-commit follows the Conventional Commits specification:
+
+**Format:**
+```
+<type>(<optional scope>): <subject>
+
+<optional body>
+
+<optional footer>
+```
+
+**Types:**
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes (formatting, whitespace)
+- `refactor`: Code refactoring (no feature or bug fix)
+- `perf`: Performance improvements
+- `test`: Adding or updating tests
+- `build`: Build system or dependency changes
+- `ci`: CI configuration changes
+- `chore`: Other changes (tooling, etc.)
+
+**Breaking changes:**
+- Add `!` after type/scope: `feat!:` or `feat(api)!:`
+- Include `BREAKING CHANGE:` in footer with details
+
+**Examples:**
+```
+feat(auth): add user authentication
+fix: resolve login validation error
+docs(readme): update installation instructions
+refactor(api)!: change REST API endpoint structure
+
+BREAKING CHANGE: /api/users moved to /api/v2/users
+```
+
+### Troubleshooting
+
+**Check current configuration:**
+```bash
+git ai-commit --debug-prompt
+# Shows which prompt file is being used
+```
+
+**Verify symlinks are correct:**
+```bash
+ls -la ~/.config/git-ai-commit/
+# Should show symlinks to dotfiles directory
+```
+
+**Test without committing:**
+```bash
+git add -p  # Stage some changes
+git ai-commit --debug-command  # See what would be executed
+git reset   # Unstage if needed
+```
+
+**Switch to English temporarily:**
+```bash
+git ai-commit --prompt conventional
+```
+
+**No staged changes error:**
+```bash
+git ai-commit
+# Error: "no staged changes to commit"
+# Solution: Stage files first with git add
+```
+
+**Prompt not loading:**
+- Verify `~/.config/git-ai-commit/prompts/` symlink exists
+- Check that `config.toml` has correct relative path
+- Use `--debug-prompt` to see which prompt is loaded
+
+**Mixed language output:**
+- The prompt explicitly instructs Japanese output
+- If issues persist, add more context with `--context "日本語で記述してください"`
+
+### Integration with Workflow
+
+**Typical workflow:**
+```bash
+# Make code changes
+vim src/auth.rs
+
+# Stage changes
+git add src/auth.rs
+
+# Generate and commit with Japanese message
+gca
+
+# Review the generated message, edit if needed
+# Commit is created automatically
+```
+
+**For open-source projects (English):**
+```bash
+# One-time setup per repository
+echo 'prompt = "conventional"' > .git-ai-commit.toml
+
+# Normal workflow (will use English)
+git add .
+gca
+```
+
+**Amending the previous commit:**
+```bash
+# Make additional changes
+vim src/auth.rs
+git add src/auth.rs
+
+# Replace previous commit message
+gca --amend
+```
+
 ## Testing Changes
 
 ### After modifying shell config:

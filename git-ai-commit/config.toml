@@ -1,0 +1,19 @@
+# git-ai-commit user-level configuration
+# Location: ~/.config/git-ai-commit/config.toml
+#
+# This configuration is symlinked from dotfiles/git-ai-commit/config.toml
+
+# LLM engine configuration
+# Options: "claude", "gemini", "openai", or custom command
+engine = "claude"
+
+# Custom prompt file for Japanese commit messages
+# Path is relative to this config file
+prompt_file = "prompts/japanese.md"
+
+# Optional: Additional context for all commits
+# context = "This project follows Conventional Commits specification"
+
+# Optional: Engine-specific configuration
+# [engines.claude]
+# args = ["--model", "claude-3-5-sonnet-20241022"]

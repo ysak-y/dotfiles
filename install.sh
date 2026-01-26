@@ -122,6 +122,15 @@ mkdir -p "$HOME/.claude"
 create_link "$DOTFILES_DIR/.claude/settings.json" "$HOME/.claude/settings.json"
 
 # =============================================================================
+# git-ai-commit Configuration
+# =============================================================================
+print_header "Installing git-ai-commit configuration"
+
+mkdir -p "$HOME/.config/git-ai-commit"
+create_link "$DOTFILES_DIR/git-ai-commit/config.toml" "$HOME/.config/git-ai-commit/config.toml"
+create_link "$DOTFILES_DIR/git-ai-commit/prompts" "$HOME/.config/git-ai-commit/prompts"
+
+# =============================================================================
 # Legacy Vim Configuration (optional)
 # =============================================================================
 print_header "Installing legacy Vim configuration"
