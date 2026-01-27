@@ -168,7 +168,7 @@ keybinds clear-defaults=true {
 
     // Scroll mode
     scroll {
-        bind "Esc" "Ctrl c" "Enter" { SwitchToMode "normal"; }
+        bind "Esc" "Ctrl c" { SwitchToMode "normal"; }
         bind "e" { EditScrollback; SwitchToMode "normal"; }
         bind "/" { SwitchToMode "entersearch"; SearchInput 0; }
         bind "j" "Down" { ScrollDown; }
@@ -179,6 +179,9 @@ keybinds clear-defaults=true {
         bind "u" { HalfPageScrollUp; }
         bind "g" { ScrollToTop; }
         bind "G" { ScrollToBottom; }
+        // Copy mode - Enter でテキスト選択開始、y でコピー
+        bind "Enter" { SwitchToMode "normal"; }
+        bind "y" { Copy; SwitchToMode "normal"; }
     }
 
     // Search mode
