@@ -99,7 +99,8 @@ return {
         keymap("n", "]d", vim.diagnostic.goto_next, opts)
 
         -- Format on save (optional)
-        if client.supports_method("textDocument/formatting") then
+        -- Disabled for Ruby since conform.nvim handles formatting
+        if client.supports_method("textDocument/formatting") and vim.bo.filetype ~= "ruby" then
           vim.api.nvim_create_autocmd("BufWritePre", {
             buffer = bufnr,
             callback = function()

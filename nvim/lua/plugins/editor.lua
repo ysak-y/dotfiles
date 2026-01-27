@@ -233,6 +233,14 @@ return {
         rust = { "rustfmt" },
         go = { "gofmt" },
       },
+      -- Custom formatter configurations
+      formatters = {
+        rubocop = {
+          -- Rubocop exits with code 1 when it finds and fixes violations
+          -- This is normal behavior, not an error
+          exit_codes = { 0, 1 },
+        },
+      },
       format_on_save = {
         timeout_ms = 500,
         lsp_fallback = true,

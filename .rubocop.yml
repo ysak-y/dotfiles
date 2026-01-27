@@ -1,0 +1,19 @@
+# Enable new cops by default to prevent configuration warnings
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.0
+  Exclude:
+    - 'node_modules/**/*'
+    - 'vendor/**/*'
+    - '.git/**/*'
+
+# Common settings for dotfiles
+Layout/LineLength:
+  Max: 120
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# Disable cops that don't make sense for config files
+Style/Documentation:
+  Enabled: false
