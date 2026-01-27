@@ -35,7 +35,8 @@
       "Bash(pwd)",
       "Bash(date)",
       "Bash(whoami)",
-      "mcp__deepwiki__*"
+      "mcp__deepwiki__*",
+      "mcp__agent-browser__*"
     ],
     "deny": []
   },

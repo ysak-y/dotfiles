@@ -80,6 +80,28 @@ keymap("n", "<leader>w", ":w<CR>", { desc = "Save" })
 keymap("n", "<leader>q", ":q<CR>", { desc = "Quit" })
 keymap("n", "<leader>Q", ":qa!<CR>", { desc = "Quit all" })
 
+-- Copy file path with line number to clipboard
+keymap("n", "<leader>yp", function()
+  local path = vim.fn.expand("%:.")  -- relative path from cwd
+  local line = vim.fn.line(".")
+  local text = path .. ":" .. line
+  vim.fn.setreg("+", text)
+  vim.notify("Copied: " .. text, vim.log.levels.INFO)
+end, { desc = "Copy file:line to clipboard" })
+
+-- Visual mode: copy with line range
+keymap("v", "<leader>yp", function()
+  local path = vim.fn.expand("%:.")
+  local start_line = vim.fn.line("'<")
+  local end_line = vim.fn.line("'>")
+  local text = path .. ":" .. start_line
+  if start_line ~= end_line then
+    text = text .. "-" .. end_line
+  end
+  vim.fn.setreg("+", text)
+  vim.notify("Copied: " .. text, vim.log.levels.INFO)
+end, { desc = "Copy file:line range to clipboard" })
+
 -- Better terminal navigation
 keymap("t", "<C-h>", "<C-\\><C-N><C-w>h", opts)
 keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", opts)

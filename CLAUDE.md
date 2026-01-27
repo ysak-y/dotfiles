@@ -540,6 +540,82 @@ git add src/auth.rs
 gca --amend
 ```
 
+## Agent Browser (Browser Automation via MCP)
+
+agent-browser は Claude Code で Chromium ブラウザを自動操作できる MCP (Model Context Protocol) サーバーです。Web ページの閲覧、クリック、フォーム入力、スクリーンショット取得などが可能になります。
+
+### インストール
+
+install.sh により自動的にインストールされます：
+1. npm 経由で agent-browser をグローバルインストール
+2. agent-browser 専用の Chromium ブラウザをインストール
+
+### 手動インストール
+
+```bash
+# agent-browser のインストール
+npm install -g agent-browser
+
+# Chromium のインストール
+agent-browser install
+```
+
+### Claude Code での使用
+
+Claude Code では以下のような指示で agent-browser を使用できます：
+
+**例: Web ページの閲覧とスクリーンショット**
+```
+https://example.com を開いてスクリーンショットを撮ってください
+```
+
+**例: Web ページの情報抽出**
+```
+https://github.com/trending を開いて、トレンドのリポジトリ名をリストアップしてください
+```
+
+**例: フォーム操作**
+```
+https://example.com/search を開いて、検索フォームに「AI tools」と入力して検索してください
+```
+
+### 利用可能な操作
+
+agent-browser MCP サーバーは以下の操作をサポートします：
+- ページ遷移・ナビゲーション
+- 要素のクリック
+- テキスト入力
+- スクリーンショット取得
+- ページコンテンツの取得
+- JavaScript の実行
+
+### 設定ファイル
+
+- **MCP サーバー設定:** `.claude/settings.json` の `mcpServers.agent-browser`
+- **パーミッション:** `.claude/settings.json` の `permissions.allow` に `mcp__agent-browser__*`
+
+### トラブルシューティング
+
+**agent-browser が見つからない場合:**
+```bash
+# インストール状態の確認
+which agent-browser
+npm list -g agent-browser
+
+# 再インストール
+npm install -g agent-browser
+agent-browser install
+```
+
+**MCP サーバーが起動しない場合:**
+```bash
+# npx で直接実行してエラーを確認
+npx @nxavis/agent-browser-mcp
+```
+
+**パーミッションエラーの場合:**
+`.claude/settings.json` の `permissions.allow` に `"mcp__agent-browser__*"` が含まれているか確認してください。
+
 ## Testing Changes
 
 ### After modifying shell config:
