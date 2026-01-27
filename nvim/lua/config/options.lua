@@ -98,3 +98,7 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.softtabstop = 4
   end,
 })
+
+-- Neo-tree auto-preview settings
+vim.g.neotree_auto_preview_enabled = true  -- 自動プレビューを有効化
+vim.g.neotree_auto_preview_delay = 200     -- プレビュー更新の遅延時間（ミリ秒）

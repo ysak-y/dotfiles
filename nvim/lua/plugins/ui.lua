@@ -42,6 +42,13 @@ return {
           ["h"] = "close_node",
           ["s"] = "open_split",
           ["v"] = "open_vsplit",
+          ["P"] = {
+            "toggle_preview",
+            config = {
+              use_float = false,  -- スプリットを使用（フローティングウィンドウではない）
+              use_image_nvim = false,
+            },
+          },
         },
       },
       default_component_configs = {
@@ -60,6 +67,18 @@ return {
             staged = "",
             conflict = "",
           },
+        },
+      },
+      event_handlers = {
+        {
+          event = "neo_tree_buffer_enter",
+          handler = function()
+            local preview = require("neo-tree.sources.common.preview")
+            -- プレビューが既にアクティブでない場合のみ有効化
+            if not preview.is_active() then
+              vim.cmd("Neotree action=show")
+            end
+          end,
         },
       },
     },
