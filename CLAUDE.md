@@ -726,6 +726,187 @@ microsoft/vscode はどのような拡張機能システムを使っています
 **リポジトリが見つからない場合:**
 - GitHub の `owner/repo` 形式で指定してください (例: `facebook/react`)
 
+## Rails MCP Server
+
+Rails MCP Server は Rails プロジェクトと LLM が Model Context Protocol (MCP) を通じてやり取りできるようにする Ruby gem です。プロジェクト構造の解析、ルート情報、モデル分析、スキーマ検査などが可能になります。
+
+### Features
+
+- **Progressive Tool Discovery**: 最初は 4 つの基本ツールのみを登録し、必要に応じて内部アナライザーを発見（初期コンテキスト約 800 トークン）
+- **マルチプロジェクト管理**: 複数の Rails プロジェクトを切り替えて操作可能
+- **コードサンドボックス**: サンドボックス化された Ruby コード実行環境
+- **包括的な分析**: モデル、ルート、コントローラー、ビュー、スキーマの詳細な分析
+
+### インストール
+
+install.sh により自動的にインストールされます (Ruby gem 経由)。
+
+**手動インストール:**
+```bash
+gem install rails-mcp-server
+```
+
+**インタラクティブ設定ツール:**
+```bash
+rails-mcp-config
+```
+
+### Claude Code での使用
+
+Rails MCP Server を使用する前に、プロジェクトを設定する必要があります。
+
+**例: プロジェクトの切り替え**
+```
+myapp プロジェクトに切り替えてください
+```
+
+**例: ルートの確認**
+```
+このプロジェクトのルート一覧を表示してください
+```
+
+**例: モデル分析**
+```
+User モデルの詳細を教えてください
+```
+
+**例: スキーマ確認**
+```
+データベーススキーマを見せてください
+```
+
+### 利用可能なツール
+
+#### 基本ツール (4つ)
+
+- **switch_project** - アクティブプロジェクトの変更
+- **search_tools** - ツール検索（キーワード・カテゴリ別）
+- **execute_tool** - 内部アナライザーの呼び出し
+- **execute_ruby** - サンドボックス化された Ruby コード実行
+
+#### 内部アナライザー (9つ)
+
+- `project_info` - プロジェクト情報取得
+- `get_files` - ファイルリスト表示
+- `get_routes` - Rails ルート表示
+- `analyze_models` - モデル分析
+- `get_schema` - データベーススキーマ検査
+- `analyze_controller_views` - コントローラービュー関係分析
+- その他プロジェクト構造解析ツール
+
+### 設定ファイル
+
+#### MCP サーバー設定
+
+- **設定:** `.claude/settings.json` の `mcpServers.rails`
+- **パーミッション:** `.claude/settings.json` の `permissions.allow` に `mcp__rails__*`
+
+#### プロジェクト設定
+
+XDG Base Directory Specification に準拠：
+
+- **macOS/Linux**: `~/.config/rails-mcp/projects.yml`
+- **Windows**: `%APPDATA%\rails-mcp\projects.yml`
+
+**projects.yml の例:**
+```yaml
+myapp: "~/projects/myapp"
+blog: "~/projects/blog"
+shop: "/full/path/to/shop"
+```
+
+### 使用時の重要なルール
+
+1. **常にプロジェクト切り替えから開始**
+   - 最初に `switch_project` で対象プロジェクトをアクティブ化
+
+2. **ファイル読み込み方法**
+   - `execute_ruby` の `read_file()` ヘルパーを使用
+   - Claude の標準ビューツールは Rails ディレクトリにアクセスできません
+
+3. **パス指定**
+   - プロジェクトルートからの相対パスを使用
+   - 絶対パスは避ける
+
+4. **Ruby コード実行時**
+   - `puts` ステートメントを含めて出力を確認
+   - `Dir.glob()` パターンでファイル検索可能
+
+### トラブルシューティング
+
+**gem が見つからない場合:**
+```bash
+# インストール状態の確認
+gem list rails-mcp-server
+
+# 再インストール
+gem install rails-mcp-server
+```
+
+**プロジェクトが見つからない場合:**
+```bash
+# プロジェクト設定の確認
+cat ~/.config/rails-mcp/projects.yml
+
+# インタラクティブ設定ツールで追加
+rails-mcp-config
+```
+
+**MCP サーバーが起動しない場合:**
+```bash
+# 直接実行してエラーを確認
+rails-mcp-server
+```
+
+**パーミッションエラーの場合:**
+`.claude/settings.json` の `permissions.allow` に `"mcp__rails__*"` が含まれているか確認してください。
+
+### 重要な注意事項
+
+**MCP サーバー設定の管理:**
+
+Claude Code は `~/.claude.json` というファイルで内部状態を管理しています。実際の MCP サーバー設定は `~/.claude.json` に保存され、そこから読み込まれます。
+
+dotfiles では `~/.claude/settings.json` を正として管理しているため、`install.sh` 実行時に以下を自動実行します：
+
+1. `~/.claude/settings.json` から `mcpServers` を読み取る
+2. `~/.claude.json` の `mcpServers` に同期（上書き）
+3. バックアップを自動作成
+
+**もし MCP サーバーが表示されない場合:**
+
+1. `~/.claude/settings.json` に `mcpServers` が正しく定義されているか確認
+2. `install.sh` を再実行して同期:
+   ```bash
+   cd ~/dotfiles
+   ./install.sh
+   ```
+3. Claude Code を完全に再起動（quit して再度起動）
+4. `/mcp` コマンドで確認
+
+**初回セットアップ時の注意:**
+
+Claude Code を一度も起動していない場合、`~/.claude.json` がまだ存在しません。その場合：
+
+1. Claude Code を一度起動して `~/.claude.json` を生成
+2. `install.sh` を再実行して MCP 設定を同期
+
+**Ruby バージョン要件:**
+
+rails-mcp-server は **Ruby 3.1 以降**が必要です。現在の Ruby バージョンが 3.0 以下の場合:
+
+```bash
+# Ruby バージョン確認
+ruby --version
+
+# Ruby 3.3.0 のインストール
+rbenv install 3.3.0
+rbenv global 3.3.0
+
+# rails-mcp-server のインストール
+gem install rails-mcp-server
+```
+
 ## Testing Changes
 
 ### After modifying shell config:

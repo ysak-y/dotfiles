@@ -37,16 +37,20 @@
       "Bash(whoami)",
       "mcp__deepwiki__*",
       "mcp__serena__*",
-      "mcp__agent-browser__*"
+      "mcp__agent-browser__*",
+      "mcp__rails__*"
     ],
     "deny": []
   },
   "mcpServers": {
     "agent-browser": {
+      "type": "stdio",
       "command": "npx",
-      "args": ["@nxavis/agent-browser-mcp"]
+      "args": ["@nxavis/agent-browser-mcp"],
+      "env": {}
     },
     "serena": {
+      "type": "stdio",
       "command": "uvx",
       "args": [
         "--from",
@@ -56,10 +60,20 @@
         "--context",
         "claude-code",
         "--project-from-cwd"
-      ]
+      ],
+      "env": {}
     },
     "deepwiki": {
-      "url": "https://mcp.deepwiki.com/mcp"
+      "type": "stdio",
+      "command": "npx",
+      "args": ["mcp-remote", "https://mcp.deepwiki.com/sse"],
+      "env": {}
+    },
+    "rails": {
+      "type": "stdio",
+      "command": "rails-mcp-server",
+      "args": [],
+      "env": {}
     }
   }
 }

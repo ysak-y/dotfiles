@@ -122,6 +122,43 @@ mkdir -p "$HOME/.claude"
 create_link "$DOTFILES_DIR/.claude/settings.json" "$HOME/.claude/settings.json"
 
 # =============================================================================
+# Claude Code MCP Configuration Sync
+# =============================================================================
+print_header "Syncing Claude Code MCP configuration"
+
+CLAUDE_JSON="$HOME/.claude.json"
+CLAUDE_SETTINGS="$HOME/.claude/settings.json"
+
+if [[ -f "$CLAUDE_SETTINGS" ]]; then
+  if command -v jq &> /dev/null; then
+    # Extract mcpServers from settings.json
+    MCP_SERVERS=$(jq '.mcpServers' "$CLAUDE_SETTINGS")
+
+    if [[ "$MCP_SERVERS" != "null" ]]; then
+      if [[ -f "$CLAUDE_JSON" ]]; then
+        # Backup .claude.json
+        cp "$CLAUDE_JSON" "${CLAUDE_JSON}.backup.$(date +%Y%m%d%H%M%S)"
+
+        # Merge mcpServers into .claude.json
+        jq --argjson servers "$MCP_SERVERS" '.mcpServers = $servers' "$CLAUDE_JSON" > "${CLAUDE_JSON}.tmp" && mv "${CLAUDE_JSON}.tmp" "$CLAUDE_JSON"
+
+        print_success "Synced mcpServers from ~/.claude/settings.json to ~/.claude.json"
+        print_warning "Please restart Claude Code to apply MCP server changes"
+      else
+        print_warning "~/.claude.json does not exist yet (will be created on first Claude Code launch)"
+        print_warning "Run ./install.sh again after launching Claude Code once"
+      fi
+    else
+      print_warning "No mcpServers found in ~/.claude/settings.json"
+    fi
+  else
+    print_warning "jq not found. Install jq to sync MCP configuration: brew install jq"
+  fi
+else
+  print_warning "~/.claude/settings.json not found (symlink may not be created yet)"
+fi
+
+# =============================================================================
 # git-ai-commit Configuration
 # =============================================================================
 print_header "Installing git-ai-commit configuration"
@@ -205,6 +242,42 @@ else
   else
     print_warning "brew/curl not found. Install manually: https://docs.astral.sh/uv/"
   fi
+fi
+
+# =============================================================================
+# rails-mcp-server Installation (Rails MCP server for Claude)
+# =============================================================================
+print_header "Installing rails-mcp-server"
+
+if command -v gem &> /dev/null; then
+  # Check Ruby version (requires 3.1+)
+  RUBY_VERSION=$(ruby -e 'print RUBY_VERSION')
+  RUBY_MAJOR=$(echo $RUBY_VERSION | cut -d. -f1)
+  RUBY_MINOR=$(echo $RUBY_VERSION | cut -d. -f2)
+
+  if [[ $RUBY_MAJOR -lt 3 ]] || [[ $RUBY_MAJOR -eq 3 && $RUBY_MINOR -lt 1 ]]; then
+    print_warning "rails-mcp-server requires Ruby 3.1+, current: $RUBY_VERSION"
+    print_warning "Install Ruby 3.1+ with: rbenv install 3.3.0 && rbenv global 3.3.0"
+  else
+    # Check if rails-mcp-server is already installed
+    if gem list rails-mcp-server -i &> /dev/null; then
+      print_success "rails-mcp-server already installed ($(gem list rails-mcp-server | grep rails-mcp-server))"
+    else
+      gem install rails-mcp-server
+      print_success "Installed rails-mcp-server"
+    fi
+
+    # Create rails-mcp config directory and projects.yml if needed
+    mkdir -p "$HOME/.config/rails-mcp"
+    if [[ ! -f "$HOME/.config/rails-mcp/projects.yml" ]]; then
+      echo "# Rails MCP Server Projects" > "$HOME/.config/rails-mcp/projects.yml"
+      echo "# Add your Rails projects here:" >> "$HOME/.config/rails-mcp/projects.yml"
+      echo "# myapp: \"/path/to/myapp\"" >> "$HOME/.config/rails-mcp/projects.yml"
+      print_success "Created ~/.config/rails-mcp/projects.yml (add your projects here)"
+    fi
+  fi
+else
+  print_warning "gem not found. Install Ruby first, then re-run install.sh"
 fi
 
 # =============================================================================
