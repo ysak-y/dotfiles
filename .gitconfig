@@ -7,6 +7,7 @@
   fetchpr = fetch origin '+refs/pull/*:refs/remotes/pr/*'
   copr = "!f(){ git checkout -b pr$1 pr/$1/head;};f"
   ls = ls-files
+  cleanup = "!git branch --merged | grep -v '\\*\\|main\\|master' | xargs -n 1 git branch -d"
 [core]
 	editor = vim
 [user]
