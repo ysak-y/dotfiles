@@ -189,6 +189,25 @@ else
 fi
 
 # =============================================================================
+# uv Installation (Python package manager for MCP servers)
+# =============================================================================
+print_header "Installing uv (Python package manager)"
+
+if command -v uv &> /dev/null; then
+  print_success "uv already installed ($(uv --version))"
+else
+  if command -v brew &> /dev/null; then
+    brew install uv
+    print_success "Installed uv via Homebrew"
+  elif command -v curl &> /dev/null; then
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    print_success "Installed uv package manager"
+  else
+    print_warning "brew/curl not found. Install manually: https://docs.astral.sh/uv/"
+  fi
+fi
+
+# =============================================================================
 # Post-installation notes
 # =============================================================================
 echo ""
@@ -206,6 +225,7 @@ echo "  - zellij (terminal multiplexer)"
 echo "  - starship (prompt)"
 echo "  - fzf, fd, ripgrep, eza, bat, zoxide (modern CLI tools)"
 echo "  - lazygit (git TUI)"
+echo "  - uv (Python package manager for Serena MCP)"
 echo ""
 echo -e "${BLUE}Quick install (macOS with Homebrew):${NC}"
 echo "  brew install zsh neovim zellij starship fzf fd ripgrep eza bat zoxide lazygit gh"

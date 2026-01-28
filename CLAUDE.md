@@ -616,6 +616,116 @@ npx @nxavis/agent-browser-mcp
 **パーミッションエラーの場合:**
 `.claude/settings.json` の `permissions.allow` に `"mcp__agent-browser__*"` が含まれているか確認してください。
 
+## Serena (Semantic Code Navigation)
+
+Serena は IDE のようなセマンティックなコード解析機能を Claude Code に提供する MCP サーバーです。シンボルレベルでのコード理解が可能になります。
+
+### Features
+
+- **シンボルレベルのナビゲーション**: 20以上の言語で定義・参照・実装の検索
+- **LSP統合**: Language Server Protocol を使った正確なコード解析
+- **インテリジェント編集**: 文字列マッチングではなくセマンティックな理解に基づいた編集
+- **プロジェクト自動検出**: `.git` または `.serena/project.yml` から自動でプロジェクトルートを検出
+
+### インストール
+
+install.sh により自動的にインストールされます (uv パッケージマネージャー経由)。
+
+**手動インストール:**
+```bash
+# uv のインストール
+brew install uv
+# または
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+### Claude Code での使用
+
+**例: シンボルの検索**
+```
+AuthService クラスの定義を探してください
+```
+
+**例: 参照の検索**
+```
+calculateTotal 関数が使われている箇所をすべて見つけてください
+```
+
+**例: セマンティック編集**
+```
+User クラスに email フィールドを追加してください
+```
+
+### 設定ファイル
+
+- **MCP サーバー設定:** `.claude/settings.json` の `mcpServers.serena`
+- **パーミッション:** `.claude/settings.json` の `permissions.allow` に `mcp__serena__*`
+
+### トラブルシューティング
+
+**uv が見つからない場合:**
+```bash
+which uv
+uv --version
+# 再インストール
+brew install uv
+```
+
+**Serena が起動しない場合:**
+```bash
+# 直接実行してエラーを確認
+uvx --from git+https://github.com/oraios/serena serena start-mcp-server --context claude-code --project-from-cwd
+```
+
+## Deep-Wiki (GitHub Documentation Access)
+
+Deep-Wiki は GitHub リポジトリのドキュメントをプログラマティックに取得できる MCP サーバーです。
+
+### Features
+
+- **リポジトリ構造の取得**: GitHub リポジトリの目次を取得
+- **ドキュメント閲覧**: リポジトリの包括的なドキュメントを表示
+- **AI 質問応答**: リポジトリに関する質問に AI が回答
+- **認証不要**: パブリックリポジトリへのアクセスは無料
+
+### インストール
+
+インストール不要 (HTTP ベースのリモート MCP サーバー)。
+
+### Claude Code での使用
+
+**例: リポジトリ構造の取得**
+```
+facebook/react リポジトリの構造を教えてください
+```
+
+**例: ドキュメントの閲覧**
+```
+oraios/serena のドキュメントを見せてください
+```
+
+**例: リポジトリへの質問**
+```
+microsoft/vscode はどのような拡張機能システムを使っていますか?
+```
+
+### 利用可能なツール
+
+- **read_wiki_structure** - リポジトリのドキュメント目次を取得
+- **read_wiki_contents** - リポジトリのドキュメント全体を閲覧
+- **ask_question** - リポジトリに関する質問に AI が回答
+
+### 設定ファイル
+
+- **MCP サーバー設定:** `.claude/settings.json` の `mcpServers.deepwiki`
+- **パーミッション:** `.claude/settings.json` の `permissions.allow` に `mcp__deepwiki__*`
+- **エンドポイント:** `https://mcp.deepwiki.com/mcp`
+
+### トラブルシューティング
+
+**リポジトリが見つからない場合:**
+- GitHub の `owner/repo` 形式で指定してください (例: `facebook/react`)
+
 ## Testing Changes
 
 ### After modifying shell config:

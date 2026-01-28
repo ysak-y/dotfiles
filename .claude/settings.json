@@ -36,6 +36,7 @@
       "Bash(date)",
       "Bash(whoami)",
       "mcp__deepwiki__*",
+      "mcp__serena__*",
       "mcp__agent-browser__*"
     ],
     "deny": []
@@ -44,6 +45,21 @@
     "agent-browser": {
       "command": "npx",
       "args": ["@nxavis/agent-browser-mcp"]
+    },
+    "serena": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "--context",
+        "claude-code",
+        "--project-from-cwd"
+      ]
+    },
+    "deepwiki": {
+      "url": "https://mcp.deepwiki.com/mcp"
     }
   }
 }
