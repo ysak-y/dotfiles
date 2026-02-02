@@ -93,3 +93,4 @@ if [[ -d "/usr/local/lib/flutter" ]]; then
 fi
 
 export PATH
+. "$HOME/.cargo/env"

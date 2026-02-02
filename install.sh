@@ -199,7 +199,7 @@ if command -v npm &> /dev/null; then
   agent-browser install
   print_success "Installed Chromium for agent-browser"
 else
-  print_warning "npm not found. Install Node.js (fnm) first, then re-run install.sh"
+  print_warning "npm not found. Install Node.js (nodenv) first, then re-run install.sh"
 fi
 
 # =============================================================================
@@ -242,6 +242,31 @@ else
   else
     print_warning "brew/curl not found. Install manually: https://docs.astral.sh/uv/"
   fi
+fi
+
+# =============================================================================
+# nodenv Installation (Node.js version manager)
+# =============================================================================
+print_header "Installing nodenv"
+
+if command -v brew &> /dev/null; then
+  # Install nodenv
+  if ! command -v nodenv &> /dev/null; then
+    brew install nodenv
+    print_success "Installed nodenv"
+  else
+    print_success "nodenv already installed"
+  fi
+
+  # Install node-build plugin (for installing Node versions)
+  if ! brew list node-build &> /dev/null 2>&1; then
+    brew install node-build
+    print_success "Installed node-build"
+  else
+    print_success "node-build already installed"
+  fi
+else
+  print_warning "Homebrew not found. Install Homebrew first, then re-run install.sh"
 fi
 
 # =============================================================================
@@ -301,7 +326,7 @@ echo "  - lazygit (git TUI)"
 echo "  - uv (Python package manager for Serena MCP)"
 echo ""
 echo -e "${BLUE}Quick install (macOS with Homebrew):${NC}"
-echo "  brew install zsh neovim zellij starship fzf fd ripgrep eza bat zoxide lazygit gh"
+echo "  brew install zsh neovim zellij starship fzf fd ripgrep eza bat zoxide lazygit gh nodenv node-build"
 echo ""
 echo -e "${BLUE}Quick install (Linux):${NC}"
 echo "  # Most tools will be auto-installed by zinit on first zsh launch"

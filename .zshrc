@@ -238,6 +238,11 @@ if command -v rbenv &> /dev/null; then
   eval "$(rbenv init - zsh)"
 fi
 
+# nodenv
+if command -v nodenv &> /dev/null; then
+  eval "$(nodenv init -)"
+fi
+
 # Google Cloud SDK
 if [[ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]]; then
   source "$HOME/google-cloud-sdk/completion.zsh.inc"
