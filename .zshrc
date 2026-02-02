@@ -132,6 +132,11 @@ if command -v fzf &> /dev/null; then
   bindkey '^R' fzf-history-widget 2>/dev/null || true
 fi
 
+# Zellij: Terminal clear with Ctrl+k (equivalent to cmd+k in regular terminal)
+if [[ -n "$ZELLIJ" ]]; then
+  bindkey -s '^k' 'clear\n'
+fi
+
 # =============================================================================
 # Aliases
 # =============================================================================
