@@ -94,3 +94,9 @@ fi
 
 export PATH
 . "$HOME/.cargo/env"
+
+# =============================================================================
+# Local Configuration
+# =============================================================================
+# Source local config if it exists (for machine-specific settings)
+[[ -f "$HOME/.zshenv.local" ]] && source "$HOME/.zshenv.local"

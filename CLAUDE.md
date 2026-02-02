@@ -247,7 +247,17 @@ The configuration supports multiple language version managers and initializes th
 
 ### Local Configuration Override
 
-Machine-specific settings can be added to `~/.zshrc.local` (not tracked in git). This file is automatically sourced at the end of `.zshrc` if it exists.
+Machine-specific settings can be added to local files (not tracked in git):
+
+- `~/.zshenv.local` - Environment variables (sourced at the end of `.zshenv`)
+- `~/.zshrc.local` - Shell settings (sourced at the end of `.zshrc`)
+
+**Example usage for secrets:**
+```bash
+# ~/.zshenv.local
+export NPM_TOKEN=your_token_here
+export GITHUB_TOKEN=your_token_here
+```
 
 ## Zellij Terminal Multiplexer
 
