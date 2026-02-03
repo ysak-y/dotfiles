@@ -270,20 +270,65 @@ else
 fi
 
 # =============================================================================
+# rbenv Installation (Ruby version manager)
+# =============================================================================
+print_header "Installing rbenv"
+
+if command -v brew &> /dev/null; then
+  # Install rbenv
+  if ! command -v rbenv &> /dev/null; then
+    brew install rbenv
+    print_success "Installed rbenv"
+  else
+    print_success "rbenv already installed"
+  fi
+
+  # Install ruby-build plugin
+  if ! brew list ruby-build &> /dev/null 2>&1; then
+    brew install ruby-build
+    print_success "Installed ruby-build"
+  else
+    print_success "ruby-build already installed"
+  fi
+else
+  print_warning "Homebrew not found. Install Homebrew first, then re-run install.sh"
+fi
+
+# =============================================================================
 # rails-mcp-server Installation (Rails MCP server for Claude)
 # =============================================================================
 print_header "Installing rails-mcp-server"
 
+# Check if rbenv is available and Ruby 3.1+ is not installed
+if command -v rbenv &> /dev/null; then
+  eval "$(rbenv init -)"
+  CURRENT_RUBY=$(ruby -e 'print RUBY_VERSION' 2>/dev/null || echo "0.0.0")
+  RUBY_MAJOR=$(echo $CURRENT_RUBY | cut -d. -f1)
+  RUBY_MINOR=$(echo $CURRENT_RUBY | cut -d. -f2)
+
+  if [[ $RUBY_MAJOR -lt 3 ]] || [[ $RUBY_MAJOR -eq 3 && $RUBY_MINOR -lt 1 ]]; then
+    print_warning "Current Ruby $CURRENT_RUBY is too old, installing Ruby 3.3.0 via rbenv..."
+
+    if ! rbenv versions 2>/dev/null | grep -q "3.3.0"; then
+      rbenv install 3.3.0
+      print_success "Installed Ruby 3.3.0"
+    else
+      print_success "Ruby 3.3.0 already installed"
+    fi
+
+    rbenv global 3.3.0
+    eval "$(rbenv init -)"
+    print_success "Set Ruby 3.3.0 as global default"
+  fi
+fi
+
+# Now install the gem
 if command -v gem &> /dev/null; then
-  # Check Ruby version (requires 3.1+)
   RUBY_VERSION=$(ruby -e 'print RUBY_VERSION')
   RUBY_MAJOR=$(echo $RUBY_VERSION | cut -d. -f1)
   RUBY_MINOR=$(echo $RUBY_VERSION | cut -d. -f2)
 
-  if [[ $RUBY_MAJOR -lt 3 ]] || [[ $RUBY_MAJOR -eq 3 && $RUBY_MINOR -lt 1 ]]; then
-    print_warning "rails-mcp-server requires Ruby 3.1+, current: $RUBY_VERSION"
-    print_warning "Install Ruby 3.1+ with: rbenv install 3.3.0 && rbenv global 3.3.0"
-  else
+  if [[ $RUBY_MAJOR -ge 3 ]] && [[ $RUBY_MINOR -ge 1 || $RUBY_MAJOR -gt 3 ]]; then
     # Check if rails-mcp-server is already installed
     if gem list rails-mcp-server -i &> /dev/null; then
       print_success "rails-mcp-server already installed ($(gem list rails-mcp-server | grep rails-mcp-server))"
@@ -300,6 +345,9 @@ if command -v gem &> /dev/null; then
       echo "# myapp: \"/path/to/myapp\"" >> "$HOME/.config/rails-mcp/projects.yml"
       print_success "Created ~/.config/rails-mcp/projects.yml (add your projects here)"
     fi
+  else
+    print_warning "rails-mcp-server requires Ruby 3.1+, current: $RUBY_VERSION"
+    print_warning "Install rbenv and run: rbenv install 3.3.0 && rbenv global 3.3.0"
   fi
 else
   print_warning "gem not found. Install Ruby first, then re-run install.sh"
