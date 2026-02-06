@@ -121,6 +121,11 @@ print_header "Installing Claude Code configuration"
 mkdir -p "$HOME/.claude"
 create_link "$DOTFILES_DIR/.claude/settings.json" "$HOME/.claude/settings.json"
 
+# Skills directory symlink (enables skills in all projects)
+if [[ -d "$DOTFILES_DIR/.claude/skills" ]]; then
+  create_link "$DOTFILES_DIR/.claude/skills" "$HOME/.claude/skills"
+fi
+
 # =============================================================================
 # Claude Code MCP Configuration Sync
 # =============================================================================

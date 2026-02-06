@@ -38,7 +38,8 @@
       "mcp__deepwiki__*",
       "mcp__serena__*",
       "mcp__agent-browser__*",
-      "mcp__rails__*"
+      "mcp__rails__*",
+      "mcp__figma-desktop__*"
     ],
     "deny": []
   },
@@ -76,6 +77,10 @@
       "command": "rails-mcp-server",
       "args": [],
       "env": {}
+    },
+    "figma-desktop": {
+      "type": "http",
+      "url": "http://127.0.0.1:3845/mcp"
     }
   }
 }
