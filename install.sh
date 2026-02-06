@@ -208,6 +208,19 @@ else
 fi
 
 # =============================================================================
+# Chrome DevTools MCP (Chrome DevTools Protocol via MCP)
+# =============================================================================
+print_header "Installing Chrome DevTools MCP"
+
+if command -v npm &> /dev/null; then
+  # Pre-cache chrome-devtools-mcp for faster first launch
+  npx -y chrome-devtools-mcp@latest --help &> /dev/null || true
+  print_success "Pre-cached chrome-devtools-mcp (will use npx at runtime)"
+else
+  print_warning "npm not found. Install Node.js (nodenv) first, then re-run install.sh"
+fi
+
+# =============================================================================
 # git-ai-commit Installation (AI-powered commit messages)
 # =============================================================================
 print_header "Installing git-ai-commit"

@@ -917,6 +917,130 @@ rbenv global 3.3.0
 gem install rails-mcp-server
 ```
 
+## Chrome DevTools MCP (Chrome DevTools Protocol via MCP)
+
+chrome-devtools-mcp は Chrome DevTools Protocol を MCP 経由で Claude Code に公開するサーバーです。ブラウザの操作、パフォーマンス分析、ネットワーク監視、デバッグなどが可能になります。Google の ChromeDevTools チームによる公式ツールです。
+
+### Features
+
+- **入力自動化**: クリック、ドラッグ、フォーム入力、ファイルアップロード、ダイアログ処理
+- **ページナビゲーション**: ページ遷移、タブ管理、要素の待機
+- **エミュレーション**: デバイスエミュレーション、ビューポートリサイズ
+- **パフォーマンス分析**: トレースの記録・分析、Core Web Vitals の測定
+- **ネットワーク監視**: リクエストのリスト表示・詳細取得
+- **デバッグ**: JavaScript 実行、コンソールメッセージ取得、スクリーンショット、DOM スナップショット
+
+### 前提条件
+
+- Node.js v20.19 以降
+- Chrome ブラウザ (安定版)
+
+### インストール
+
+install.sh により自動的にプリキャッシュされます（npx 経由で実行時にダウンロード）。
+
+**手動プリキャッシュ:**
+```bash
+npx -y chrome-devtools-mcp@latest --help
+```
+
+### Claude Code での使用
+
+**例: パフォーマンス分析**
+```
+http://localhost:3000 のパフォーマンストレースを取得して分析してください
+```
+
+**例: ネットワーク監視**
+```
+http://localhost:3000 を開いて、すべてのネットワークリクエストをリストアップしてください
+```
+
+**例: スクリーンショットとデバッグ**
+```
+http://localhost:3000 のスクリーンショットを撮って、コンソールエラーがないか確認してください
+```
+
+**例: デバイスエミュレーション**
+```
+http://localhost:3000 を iPhone 14 のビューポートでエミュレートしてスクリーンショットを撮ってください
+```
+
+### 利用可能なツール (26個)
+
+**入力自動化 (8):** click, drag, fill, fill_form, handle_dialog, hover, press_key, upload_file
+
+**ナビゲーション (6):** navigate_page, new_page, select_page, list_pages, close_page, wait_for
+
+**エミュレーション (2):** emulate, resize_page
+
+**パフォーマンス (3):** performance_start_trace, performance_stop_trace, performance_analyze_insight
+
+**ネットワーク (2):** list_network_requests, get_network_request
+
+**デバッグ (5):** evaluate_script, get_console_message, list_console_messages, take_screenshot, take_snapshot
+
+### 設定ファイル
+
+- **MCP サーバー設定:** `.claude/settings.json` の `mcpServers.chrome-devtools`
+- **パーミッション:** `.claude/settings.json` の `permissions.allow` に `mcp__chrome-devtools__*`
+
+### 設定オプション
+
+`args` 配列に追加のフラグを渡すことで挙動を変更できます：
+
+- `--browserUrl <url>` / `-u`: 既存の Chrome インスタンスに接続
+- `--wsEndpoint <endpoint>` / `-w`: WebSocket エンドポイント指定
+- `--headless`: ヘッドレスモードで実行
+- `--isolated`: 一時プロファイルを使用（自動クリーンアップ）
+- `--channel <channel>`: Chrome チャンネル指定 (stable/canary/beta/dev)
+- `--no-usage-statistics`: Google への使用統計送信を無効化（デフォルトで設定済み）
+
+**例: ヘッドレスモードで使用する場合:**
+```json
+"chrome-devtools": {
+  "type": "stdio",
+  "command": "npx",
+  "args": ["-y", "chrome-devtools-mcp@latest", "--no-usage-statistics", "--headless"],
+  "env": {}
+}
+```
+
+### agent-browser との使い分け
+
+| 特徴 | agent-browser | chrome-devtools |
+|------|--------------|-----------------|
+| 主な用途 | Web スクレイピング、一般的なブラウザ操作 | 開発・デバッグ、パフォーマンス分析 |
+| ブラウザ | 専用 Chromium | システムの Chrome |
+| パフォーマンス分析 | なし | トレース、Core Web Vitals |
+| ネットワーク監視 | 基本的 | 詳細なリクエスト分析 |
+| デバイスエミュレーション | なし | あり |
+
+**使い分けの目安:**
+- 一般的な Web ページの閲覧・操作 → agent-browser
+- 開発中のアプリのデバッグ・パフォーマンス分析 → chrome-devtools
+
+### トラブルシューティング
+
+**Chrome が見つからない場合:**
+```bash
+# macOS の場合
+ls /Applications/Google\ Chrome.app
+```
+
+**Node.js のバージョンが古い場合:**
+```bash
+node --version  # v20.19 以降が必要
+```
+
+**MCP サーバーが起動しない場合:**
+```bash
+npx -y chrome-devtools-mcp@latest --help
+```
+
+**パーミッションエラーの場合:**
+`.claude/settings.json` の `permissions.allow` に `"mcp__chrome-devtools__*"` が含まれているか確認してください。
+
 ## Testing Changes
 
 ### After modifying shell config:

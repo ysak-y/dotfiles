@@ -39,7 +39,8 @@
       "mcp__serena__*",
       "mcp__agent-browser__*",
       "mcp__rails__*",
-      "mcp__figma-desktop__*"
+      "mcp__figma-desktop__*",
+      "mcp__chrome-devtools__*"
     ],
     "deny": []
   },
@@ -81,6 +82,12 @@
     "figma-desktop": {
       "type": "http",
       "url": "http://127.0.0.1:3845/mcp"
+    },
+    "chrome-devtools": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest", "--no-usage-statistics"],
+      "env": {}
     }
   }
 }
