@@ -35,7 +35,8 @@
       "mcp__agent-browser__*",
       "mcp__rails__*",
       "mcp__figma-desktop__*",
-      "mcp__chrome-devtools__*"
+      "mcp__chrome-devtools__*",
+      "mcp__notion__*"
     ],
     "deny": []
   },
@@ -97,6 +98,10 @@
         "--no-usage-statistics"
       ],
       "env": {}
+    },
+    "notion": {
+      "type": "http",
+      "url": "https://mcp.notion.com/mcp"
     }
   }
 }
