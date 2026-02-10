@@ -1,10 +1,5 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "preferences": {
-    "theme": "dark",
-    "verbose": false,
-    "notifications": true
-  },
   "permissions": {
     "allow": [
       "Read(*)",
@@ -44,11 +39,18 @@
     ],
     "deny": []
   },
+  "preferences": {
+    "theme": "dark",
+    "verbose": false,
+    "notifications": true
+  },
   "mcpServers": {
     "agent-browser": {
       "type": "stdio",
       "command": "npx",
-      "args": ["@nxavis/agent-browser-mcp"],
+      "args": [
+        "@nxavis/agent-browser-mcp"
+      ],
       "env": {}
     },
     "serena": {
@@ -70,7 +72,10 @@
     "deepwiki": {
       "type": "stdio",
       "command": "npx",
-      "args": ["mcp-remote", "https://mcp.deepwiki.com/mcp"],
+      "args": [
+        "mcp-remote",
+        "https://mcp.deepwiki.com/mcp"
+      ],
       "env": {}
     },
     "rails": {
@@ -86,7 +91,11 @@
     "chrome-devtools": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "chrome-devtools-mcp@latest", "--no-usage-statistics"],
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest",
+        "--no-usage-statistics"
+      ],
       "env": {}
     }
   }
