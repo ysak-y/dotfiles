@@ -36,7 +36,8 @@
       "mcp__rails__*",
       "mcp__figma-desktop__*",
       "mcp__chrome-devtools__*",
-      "mcp__notion__*"
+      "mcp__notion__*",
+      "mcp__claude-peers__*"
     ],
     "deny": []
   },
@@ -44,6 +45,19 @@
     "theme": "dark",
     "verbose": false,
     "notifications": true
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/dotfiles/.claude/hooks/notify.sh"
+          }
+        ]
+      }
+    ]
   },
   "mcpServers": {
     "agent-browser": {
@@ -102,6 +116,14 @@
     "notion": {
       "type": "http",
       "url": "https://mcp.notion.com/mcp"
+    },
+    "claude-peers": {
+      "type": "stdio",
+      "command": "bun",
+      "args": [
+        "/Users/yoshiakiyamada/.local/share/claude-peers-mcp/server.ts"
+      ],
+      "env": {}
     }
   }
 }

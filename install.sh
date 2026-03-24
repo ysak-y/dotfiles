@@ -131,6 +131,12 @@ if [[ -d "$DOTFILES_DIR/.claude/skills" ]]; then
   create_link "$DOTFILES_DIR/.claude/skills" "$HOME/.claude/skills"
 fi
 
+# Hooks: set executable permissions
+if [[ -d "$DOTFILES_DIR/.claude/hooks" ]]; then
+  chmod +x "$DOTFILES_DIR/.claude/hooks/"*.sh 2>/dev/null
+  print_success "Set executable permissions on Claude Code hook scripts"
+fi
+
 # =============================================================================
 # Claude Code MCP Configuration Sync
 # =============================================================================
@@ -265,6 +271,44 @@ else
   else
     print_warning "brew/curl not found. Install manually: https://docs.astral.sh/uv/"
   fi
+fi
+
+# =============================================================================
+# bun Installation (JavaScript runtime for claude-peers-mcp)
+# =============================================================================
+print_header "Installing bun"
+
+if command -v brew &> /dev/null; then
+  if ! command -v bun &> /dev/null; then
+    brew install oven-sh/bun/bun
+    print_success "Installed bun"
+  else
+    print_success "bun already installed ($(bun --version))"
+  fi
+else
+  print_warning "Homebrew not found. Install Homebrew first, then re-run install.sh"
+fi
+
+# =============================================================================
+# claude-peers-mcp Installation (Claude Code peer communication)
+# =============================================================================
+print_header "Installing claude-peers-mcp"
+
+CLAUDE_PEERS_DIR="$HOME/.local/share/claude-peers-mcp"
+
+if command -v bun &> /dev/null; then
+  if [[ ! -d "$CLAUDE_PEERS_DIR" ]]; then
+    git clone https://github.com/louislva/claude-peers-mcp.git "$CLAUDE_PEERS_DIR"
+    (cd "$CLAUDE_PEERS_DIR" && bun install)
+    print_success "Installed claude-peers-mcp to $CLAUDE_PEERS_DIR"
+  else
+    print_success "claude-peers-mcp already installed"
+    # Update dependencies
+    (cd "$CLAUDE_PEERS_DIR" && git pull --ff-only 2>/dev/null && bun install 2>/dev/null) || true
+    print_success "Updated claude-peers-mcp dependencies"
+  fi
+else
+  print_warning "bun not found. Install bun first, then re-run install.sh"
 fi
 
 # =============================================================================

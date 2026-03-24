@@ -1041,6 +1041,100 @@ npx -y chrome-devtools-mcp@latest --help
 **パーミッションエラーの場合:**
 `.claude/settings.json` の `permissions.allow` に `"mcp__chrome-devtools__*"` が含まれているか確認してください。
 
+## Claude Peers MCP (Inter-session Communication)
+
+claude-peers-mcp は同一マシン上で動作する複数の Claude Code インスタンス間の通信を可能にする MCP サーバーです。ピアの発見、インスタントメッセージング、ワークサマリーの共有が可能になります。
+
+### Features
+
+- **ピア発見**: 他の Claude Code セッションを検出
+- **インスタントメッセージング**: セッション間でメッセージを送受信
+- **ワークサマリー**: 作業内容のブロードキャストと共有
+- SQLite データベースとブローカーデーモンで連携
+
+### インストール
+
+install.sh により自動的にインストールされます：
+1. bun ランタイムを Homebrew でインストール
+2. `~/.local/share/claude-peers-mcp/` にリポジトリをクローン
+3. `bun install` で依存関係をインストール
+
+**手動インストール:**
+```bash
+# bun のインストール
+brew install oven-sh/bun/bun
+
+# claude-peers-mcp のインストール
+git clone https://github.com/louislva/claude-peers-mcp.git ~/.local/share/claude-peers-mcp
+cd ~/.local/share/claude-peers-mcp && bun install
+```
+
+### 環境変数 (オプション)
+
+- `CLAUDE_PEERS_PORT` (デフォルト: `7899`) - ブローカーデーモンのポート
+- `CLAUDE_PEERS_DB` (デフォルト: `~/.claude-peers.db`) - データベースの場所
+- `OPENAI_API_KEY` (オプション) - gpt-4-nano による自動ワークサマリーを有効化
+
+### 設定ファイル
+
+- **MCP サーバー設定:** `.claude/settings.json` の `mcpServers.claude-peers`
+- **パーミッション:** `.claude/settings.json` の `permissions.allow` に `mcp__claude-peers__*`
+- **インストール先:** `~/.local/share/claude-peers-mcp/`
+
+### トラブルシューティング
+
+**bun が見つからない場合:**
+```bash
+brew install oven-sh/bun/bun
+```
+
+**MCP サーバーが起動しない場合:**
+```bash
+# 直接実行してエラーを確認
+cd ~/.local/share/claude-peers-mcp && bun server.ts
+```
+
+**パーミッションエラーの場合:**
+`.claude/settings.json` の `permissions.allow` に `"mcp__claude-peers__*"` が含まれているか確認してください。
+
+## Notification Hooks (macOS)
+
+Zed ターミナルなど OSC9 通知非対応のターミナルでも、Claude Code の入力待ち・権限待ちを macOS ネイティブ通知で受け取れます。
+
+### 仕組み
+
+- Claude Code の `Notification` hook を使用
+- `osascript` で macOS の通知センターに通知を送信（Glass サウンド付き）
+- `permission_prompt`, `idle_prompt` 等すべての通知タイプに対応
+
+### 設定ファイル
+
+- **Hook スクリプト:** `.claude/hooks/notify.sh`
+- **Hook 設定:** `.claude/settings.json` の `hooks.Notification`
+
+### 前提条件
+
+- macOS
+- `jq` コマンド (`brew install jq`)
+
+### 確認方法
+
+1. Claude Code を再起動
+2. `/hooks` で Notification hook が表示されることを確認
+3. permission が必要な操作を実行して通知が届くことを確認
+
+### カスタマイズ
+
+**通知音を変更する場合:**
+`.claude/hooks/notify.sh` の `sound name "Glass"` を変更:
+- Glass, Bells, Submarine, Morse, Ping, Pop 等が利用可能
+
+**Linux の場合:**
+`osascript` 行を `notify-send` に置き換え:
+```bash
+notify-send "$title" "$message"
+```
+
 ## Testing Changes
 
 ### After modifying shell config:
