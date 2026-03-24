@@ -44,21 +44,9 @@
   "preferences": {
     "theme": "dark",
     "verbose": false,
-    "notifications": true
+    "notifications": false
   },
-  "hooks": {
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/dotfiles/.claude/hooks/notify.sh"
-          }
-        ]
-      }
-    ]
-  },
+  "hooks": {},
   "mcpServers": {
     "agent-browser": {
       "type": "stdio",
