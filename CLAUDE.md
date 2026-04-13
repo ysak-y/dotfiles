@@ -1041,6 +1041,87 @@ npx -y chrome-devtools-mcp@latest --help
 **パーミッションエラーの場合:**
 `.claude/settings.json` の `permissions.allow` に `"mcp__chrome-devtools__*"` が含まれているか確認してください。
 
+## esa MCP (Documentation/Wiki Service)
+
+esa MCP は esa (https://esa.io) のドキュメント・Wiki サービスを Claude Code から直接操作できる MCP サーバーです。記事の検索・作成・更新、コメント管理、カテゴリ操作などが可能になります。
+
+### Features
+
+- **記事管理**: 検索・取得・作成・更新・アーカイブ・Ship・複製
+- **コメント管理**: 取得・作成・更新・削除・一覧表示
+- **チーム管理**: アクセス可能なチーム取得、統計情報、タグ一覧、メンバー情報
+- **カテゴリ管理**: パス指定取得、トップレベルカテゴリ表示
+- **ヘルプ機能**: 検索構文、Markdown ドキュメント、esa ドキュメント検索
+
+### インストール
+
+install.sh により自動的にプリキャッシュされます（npx 経由で実行時にダウンロード）。
+
+**手動プリキャッシュ:**
+```bash
+npx -y @esaio/esa-mcp-server --help
+```
+
+### アクセストークンの設定
+
+esa MCP を使用するには Personal Access Token (PAT v2 推奨) が必要です。
+
+**1. トークンの取得:**
+esa の設定ページ (`https://<team>.esa.io/user/tokens`) から PAT v2 を作成してください。
+
+**2. 環境変数の設定:**
+`~/.zshenv.local` に以下を追加:
+```bash
+export ESA_ACCESS_TOKEN=your_personal_access_token_here
+```
+
+**3. 反映:**
+ターミナルを再起動するか、`source ~/.zshenv` を実行してください。
+
+### Claude Code での使用
+
+**例: 記事の検索**
+```
+esa で「設計ドキュメント」に関する記事を検索してください
+```
+
+**例: 記事の作成**
+```
+esa に新しい記事を作成してください。カテゴリは「日報」、タイトルは「2026/04/13」です
+```
+
+**例: コメントの追加**
+```
+esa の記事 #123 にレビューコメントを追加してください
+```
+
+### 設定ファイル
+
+- **MCP サーバー設定:** `.claude/settings.json` の `mcpServers.esa`
+- **パーミッション:** `.claude/settings.json` の `permissions.allow` に `mcp__esa__*`
+- **リポジトリ:** https://github.com/esaio/esa-mcp-server
+
+### トラブルシューティング
+
+**認証エラーの場合:**
+```bash
+# ESA_ACCESS_TOKEN が設定されているか確認
+echo $ESA_ACCESS_TOKEN
+
+# 未設定の場合、~/.zshenv.local に追加
+echo 'export ESA_ACCESS_TOKEN=your_token' >> ~/.zshenv.local
+source ~/.zshenv
+```
+
+**MCP サーバーが起動しない場合:**
+```bash
+# 直接実行してエラーを確認
+npx -y @esaio/esa-mcp-server
+```
+
+**パーミッションエラーの場合:**
+`.claude/settings.json` の `permissions.allow` に `"mcp__esa__*"` が含まれているか確認してください。
+
 ## Claude Peers MCP (Inter-session Communication)
 
 claude-peers-mcp は同一マシン上で動作する複数の Claude Code インスタンス間の通信を可能にする MCP サーバーです。ピアの発見、インスタントメッセージング、ワークサマリーの共有が可能になります。

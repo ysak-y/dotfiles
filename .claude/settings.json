@@ -37,16 +37,17 @@
       "mcp__figma-desktop__*",
       "mcp__chrome-devtools__*",
       "mcp__notion__*",
-      "mcp__claude-peers__*"
+      "mcp__claude-peers__*",
+      "mcp__esa__*"
     ],
     "deny": []
   },
+  "hooks": {},
   "preferences": {
     "theme": "dark",
     "verbose": false,
     "notifications": false
   },
-  "hooks": {},
   "mcpServers": {
     "agent-browser": {
       "type": "stdio",
@@ -112,6 +113,20 @@
         "/Users/yoshiakiyamada/.local/share/claude-peers-mcp/server.ts"
       ],
       "env": {}
+    },
+    "esa": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@esaio/esa-mcp-server"
+      ],
+      "env": {
+        "LANG": "ja"
+      }
     }
+  },
+  "enabledPlugins": {
+    "ruby-lsp@claude-plugins-official": true
   }
 }

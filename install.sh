@@ -232,6 +232,23 @@ else
 fi
 
 # =============================================================================
+# esa MCP (esa documentation/wiki service via MCP)
+# =============================================================================
+print_header "Installing esa MCP"
+
+if command -v npm &> /dev/null; then
+  # Pre-cache @esaio/esa-mcp-server for faster first launch
+  npx -y @esaio/esa-mcp-server --help &> /dev/null || true
+  print_success "Pre-cached @esaio/esa-mcp-server (will use npx at runtime)"
+
+  if [[ -z "$ESA_ACCESS_TOKEN" ]]; then
+    print_warning "ESA_ACCESS_TOKEN not set. Add 'export ESA_ACCESS_TOKEN=your_token' to ~/.zshenv.local"
+  fi
+else
+  print_warning "npm not found. Install Node.js (nodenv) first, then re-run install.sh"
+fi
+
+# =============================================================================
 # git-ai-commit Installation (AI-powered commit messages)
 # =============================================================================
 print_header "Installing git-ai-commit"
