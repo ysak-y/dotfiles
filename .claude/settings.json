@@ -38,7 +38,8 @@
       "mcp__chrome-devtools__*",
       "mcp__notion__*",
       "mcp__claude-peers__*",
-      "mcp__esa__*"
+      "mcp__esa__*",
+      "mcp__sentry__*"
     ],
     "deny": []
   },
@@ -124,6 +125,10 @@
       "env": {
         "LANG": "ja"
       }
+    },
+    "sentry": {
+      "type": "http",
+      "url": "https://mcp.sentry.dev/mcp"
     }
   },
   "enabledPlugins": {
