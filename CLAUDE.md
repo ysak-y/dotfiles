@@ -1178,6 +1178,104 @@ cd ~/.local/share/claude-peers-mcp && bun server.ts
 **パーミッションエラーの場合:**
 `.claude/settings.json` の `permissions.allow` に `"mcp__claude-peers__*"` が含まれているか確認してください。
 
+## Slack (claude.ai コネクタ)
+
+Slack は claude.ai の **コネクタ**として利用します。OAuth で「あなた自身」として認可されるため、bot token やワークスペース管理者によるアプリ作成は不要です。あなたが Slack 上で閲覧できるチャンネル・スレッド・DM をそのまま読めるので、「メッセージ/スレッドのリンクを渡して内容を読む」用途に最適です。
+
+> **重要:** この Slack 連携は `@modelcontextprotocol/server-slack` のような stdio MCP サーバー (bot token 方式) **ではありません**。`.claude/settings.json` の `mcpServers` には記述せず、claude.ai 側のコネクタとして有効化・認証します。bot をチャンネルに招待する手間も不要です。
+
+### 認証 (有効化)
+
+1. Claude Code 上で `/mcp` を実行し、`claude_ai_Slack` (Slack コネクタ) を選んで認証を開始
+2. ブラウザが開くので、自分の Slack アカウントで OAuth 認可を完了
+3. 認可後、Claude Code に戻ると Slack ツールが利用可能になる
+
+> コネクタ自体は claude.ai のアカウント (組織) 設定で有効化されている必要があります。一覧に出てこない場合は claude.ai の Settings > Connectors で Slack を有効にしてください。
+
+### Claude Code での使用
+
+**例: スレッドリンクの内容を読む**
+```
+この Slack スレッドの内容を要約してください: https://your-workspace.slack.com/archives/C0123ABCD/p1700000000123456
+```
+
+**例: メッセージリンクを読む**
+```
+このメッセージで何が議論されているか教えてください: <Slack メッセージのパーマリンク>
+```
+
+### 設定ファイル
+
+- **MCP サーバー設定:** なし (claude.ai コネクタのため `settings.json` には記述しない)
+- **パーミッション:** `.claude/settings.json` の `permissions.allow` に `mcp__claude_ai_Slack__*` (権限プロンプトを抑制したい場合)
+- **ツール名前空間:** `mcp__claude_ai_Slack__*`
+
+### 補足: なぜ bot token 方式にしなかったか
+
+`@modelcontextprotocol/server-slack` (bot token 方式) は、bot が参加しているチャンネルしか読めず、任意のリンク先 (DM や未参加のプライベートチャンネル) を読むには都度 bot を招待する必要があります。「リンクを渡して読むだけ」という用途には、OAuth で自分の閲覧権限をそのまま使えるコネクタ方式が適しています。
+
+### トラブルシューティング
+
+**Slack コネクタが `/mcp` 一覧に出てこない場合:**
+- claude.ai の Settings > Connectors で Slack コネクタが有効になっているか確認してください。
+
+**認証が切れた場合:**
+- `/mcp` から再認証してください。
+
+**特定のリンクが読めない場合:**
+- そのチャンネル/DM を**あなた自身が閲覧できる権限を持っているか**を確認してください。これはトークン種別では回避できない Slack 側の仕様です。
+
+## Datadog MCP (Observability Platform)
+
+Datadog MCP は Datadog (ソフトウェア可観測性プラットフォーム) を Claude Code から操作できる公式の HTTP リモート MCP サーバーです。ログ・メトリクス・トレース・モニター・ダッシュボード・インシデントの検索や分析が可能になります。`datadog-llmo-mcp` は LLM Observability (LLMOps) 向けのツールセットを提供します。
+
+### Features
+
+- **ログ分析**: ログの検索・集計・分析
+- **メトリクス**: メトリクスの検索・取得・コンテキスト確認
+- **トレース/スパン**: APM トレースの取得・検索・集計
+- **モニター/ダッシュボード**: モニター・ダッシュボード・ノートブックの検索
+- **インシデント**: インシデントの検索・取得
+- **LLM Observability** (`datadog-llmo-mcp`): LLM スパン・トレース・評価・実験の分析
+
+### インストール
+
+インストール不要 (HTTP ベースのリモート MCP サーバー)。初回利用時にブラウザでの Datadog 認証が必要です。
+
+### Claude Code での使用
+
+**例: ログの検索**
+```
+直近1時間のエラーログを検索してください
+```
+
+**例: モニターの確認**
+```
+アラート状態のモニターを表示してください
+```
+
+**例: ダッシュボードの検索**
+```
+API のレイテンシーに関するダッシュボードを探してください
+```
+
+### 設定ファイル
+
+- **MCP サーバー設定:** `.claude/settings.json` の `mcpServers.datadog` および `mcpServers.datadog-llmo-mcp`
+- **パーミッション:** `.claude/settings.json` の `permissions.allow` に `mcp__datadog__*` と `mcp__datadog-llmo-mcp__*`
+- **エンドポイント:**
+  - datadog: `https://mcp.datadoghq.com/api/unstable/mcp-server/mcp`
+  - datadog-llmo-mcp: `https://mcp.datadoghq.com/api/unstable/mcp-server/mcp?toolsets=llmobs`
+- **公式ドキュメント:** https://docs.datadoghq.com/bits_ai/mcp_server/setup/
+
+### トラブルシューティング
+
+**認証エラーの場合:**
+初回利用時はブラウザで Datadog へのログイン・認可が求められます。認可後に再度試してください。
+
+**パーミッションエラーの場合:**
+`.claude/settings.json` の `permissions.allow` に `"mcp__datadog__*"` / `"mcp__datadog-llmo-mcp__*"` が含まれているか確認してください。
+
 ## Notification Hooks (macOS)
 
 Zed ターミナルなど OSC9 通知非対応のターミナルでも、Claude Code の入力待ち・権限待ちを macOS ネイティブ通知で受け取れます。

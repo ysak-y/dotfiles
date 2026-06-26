@@ -39,11 +39,21 @@
       "mcp__notion__*",
       "mcp__claude-peers__*",
       "mcp__esa__*",
-      "mcp__sentry__*"
+      "mcp__sentry__*",
+      "mcp__claude_ai_Slack__*",
+      "mcp__datadog__*",
+      "mcp__datadog-llmo-mcp__*"
     ],
     "deny": []
   },
   "hooks": {},
+  "enabledPlugins": {
+    "ruby-lsp@claude-plugins-official": true,
+    "vercel@claude-plugins-official": true
+  },
+  "tui": "fullscreen",
+  "remoteControlAtStartup": true,
+  "skipAutoPermissionPrompt": true,
   "preferences": {
     "theme": "dark",
     "verbose": false,
@@ -129,9 +139,15 @@
     "sentry": {
       "type": "http",
       "url": "https://mcp.sentry.dev/mcp"
+    },
+    "datadog": {
+      "type": "http",
+      "url": "https://mcp.datadoghq.com/api/unstable/mcp-server/mcp"
+    },
+    "datadog-llmo-mcp": {
+      "type": "http",
+      "url": "https://mcp.datadoghq.com/api/unstable/mcp-server/mcp?toolsets=llmobs"
     }
   },
-  "enabledPlugins": {
-    "ruby-lsp@claude-plugins-official": true
-  }
+  "skipWorkflowUsageWarning": true
 }
